@@ -1,0 +1,134 @@
+<?xml version="1.0" standalone="no"?>
+<jitDump>
+#INFO: Crashed in compilation thread 000000000001A300.
+<currentIL>
+
+        +------------- Byte Code Index
+        |  +-------------------- OpCode
+        |  |                        +------------- First Field
+        |  |                        |     +------------- Branch Target
+        |  |                        |     |      +------- Const Pool Index
+        |  |                        |     |      |    +------------- Constant
+        |  |                        |     |      |    |
+        V  V                        V     V      V    V
+
+        0, JBaload0             
+        1, JBinvokespecial         21
+        4, JBifeq                 165,  169,            
+        7, JBaconstnull         
+        8, JBastore                 4
+       10, JBaconstnull         
+       11, JBastore                 5
+       13, JBaconstnull         
+       14, JBastore                 6
+       16, JBiconst0            
+       17, JBistore                 7
+       19, JBaconstnull         
+       20, JBaload2             
+       21, JBifacmpne              83,  104,            
+       24, JBnewdup                            159
+       27, JBdup                
+       28, JBinvokespecial        160
+       31, JBastore                 8
+       33, JBaload                  8
+       35, JBinvokedynamic          4
+       38, JBnop                
+       39, JBnop                
+       40, JBastore                 9
+       42, JBaload0getfield      
+       43, JBgetfield                            9
+       46, JBaload1             
+       47, JBaload                  9
+       49, JBinvokeinterface2      
+       50, JBnop                
+       51, JBinvokeinterface        161
+       54, JBastore                 4
+       56, JBaload                  4
+       58, JBifnull                43,  101,            
+       61, JBaload                  8
+       63, JBgetfield                          162
+       66, JBistore                10
+       68, JBaload0getfield      
+       69, JBgetfield                           22
+       72, JBiload                 10
+       74, JBinvokevirtual        163
+       77, JBastore                11
+       79, JBaload                 11
+       81, JBifnull                20,  101,            
+       84, JBaload                 11
+       86, JBinvokevirtual        164
+       89, JBastore                 5
+       91, JBaload                 11
+       93, JBinvokevirtual        166
+       96, JBastore                 6
+       98, JBiconst1            
+       99, JBistore                 7
+      101, JBgoto                  44,  145,            
+      104, JBaload0getfield      
+      105, JBgetfield                            9
+      108, JBaload2             
+      109, JBinvokevirtual        167
+      112, JBaload1             
+      113, JBinvokeinterface2      
+      114, JBnop                
+      115, JBinvokeinterface        168
+      118, JBastore                 4
+      120, JBaload                  4
+      122, JBifnull                23,  145,            
+      125, JBnewdup                            169
+      128, JBdup                
+      129, JBaload2             
+      130, JBinvokevirtual        170
+      133, JBaconstnull         
+      134, JBcheckcast                         171
+      137, JBinvokespecial        172
+      140, JBastore                 5
+      142, JBiconst1            
+      143, JBistore                 7
+      145, JBiload                  7
+      147, JBifeq                  22,  169,            
+      150, JBaload0             
+      151, JBaload1             
+      152, JBaload                  4
+      154, JBaload                  5
+      156, JBaload                  6
+      158, JBiload3             
+      159, JBinvokespecial        173
+      162, JBastore                 8
+      164, JBaload                  8
+      166, JBreturn1            
+      167, JBastore                 8
+      169, JBaconstnull         
+      170, JBreturn1            
+
+
+This method is warm
+<trees
+	title="Trees"
+	method="jdk/internal/loader/BuiltinClassLoader.findClassInSharedClassesCache(Ljava/lang/String;Ljdk/internal/loader/BuiltinClassLoader$LoadedModule;Z)Ljava/lang/Class;"
+	hotness="warm">
+
+Trees: for jdk/internal/loader/BuiltinClassLoader.findClassInSharedClassesCache(Ljava/lang/String;Ljdk/internal/loader/BuiltinClassLoader$LoadedModule;Z)Ljava/lang/Class;
+
+Call Stack Info
+CalleeIndex CallerIndex ByteCodeIndex CalleeMethod
+       0         -1         137       java/security/CodeSource.<init>(Ljava/net/URL;[Ljava/security/CodeSigner;)V
+       1          0          30       sun/net/util/URLUtil.urlNoFragString(Ljava/net/URL;)Ljava/lang/String;
+       2          1          24       java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+       3          2           2       java/lang/AbstractStringBuilder.append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+n153n     BBStart <block_15> (freq 92)                                                        [0x7f9ecc090f90] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+n157n     ificmpne --> block_2 BBStart at n15n ()                                             [0x7f9ecc0910d0] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=2 flg=0x20
+n155n       iload  <count-for-recompile>[#312  Static] [flags 0x2000303 0x40 ]                [0x7f9ecc091030] bci=[-1,0,951] rc=1 vc=33 vn=- li=- udi=- nc=0
+n156n       iconst 1                                                                          [0x7f9ecc091080] bci=[-1,0,951] rc=1 vc=33 vn=- li=- udi=- nc=0
+n154n     BBEnd </block_15> =====                                                             [0x7f9ecc090fe0] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+
+n188n     BBStart <block_18> (freq 0)                                                         [0x7f9ecc091a80] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+n187n     goto --> block_16 BBStart at n158n                                                  [0x7f9ecc091a30] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+n189n     BBEnd </block_18> =====                                                             [0x7f9ecc091ad0] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+
+n15n      BBStart <block_2> (freq 9930)                                                       [0x7f9ecc012c60] bci=[-1,0,951] rc=0 vc=33 vn=- li=- udi=- nc=0
+n19n      treetop                                                                             [0x7f9ecc012da0] bci=[-1,1,951] rc=0 vc=33 vn=- li=- udi=- nc=1
+n18n        
+=== EXCEPTION THROWN (JIT Shutdown) ===

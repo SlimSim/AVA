@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>A Voting App</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="webjars/jquery/jquery.min.js"></script>
+</head>
+<body>
+    <h1>A Voting App</h1>
+
+    <table>
+        <tr th:each="meeting: ${meetings}">
+            <td th:text="${meeting.id}" />
+            <td th:text="${meeting.name}" />
+        </tr>
+    </table>
+
+    <form action="#" th:action="@{/meeting}" method="post">
+        <input type="text" id="name" name="name" />
+        <input id="submit" class="btn btn-bd-primary" type="submit" value="Create new meeting" />
+    </form>
+    <script>
+        $("#submit").addClass( "btn-success" );
+    </script>
+</body>
+</html>

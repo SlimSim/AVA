@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>A Voting App</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/main.css" rel="stylesheet">
+    <script src="/js/meeting.js"></script>
+</head>
+<body>
+    <h1 th:text="${meetingName}" />
+    <h3>A Voting App</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Ordningsfråga</th>
+                <th>Sakupplysning</th>
+                <th>Kommentar</th>
+                <th>Begär ordet</th>
+                <th>Rösta Ja</th>
+            </tr>
+        </thead>
+        <tbody id="participants"></tbody>
+    </table>
+
+</body>
+</html>
