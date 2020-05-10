@@ -13,11 +13,14 @@ import java.util.List;
 @Service
 public class ParticipantService {
 
-    @Autowired
-    private ParticipantRepository participantRepository;
+    //@Autowired
+    //private ParticipantRepository participantRepository;
 
 
     Logger log = LoggerFactory.getLogger(MainController.class);
+
+    List<Participant> participants = new ArrayList<>();
+
     /*
     List<Participant> participants = new ArrayList<>( Arrays. asList(
             new Participant(1, "Adam", false, false, false),
@@ -36,15 +39,15 @@ public class ParticipantService {
         List<Participant> participants = new ArrayList<>();
         Iterable<Participant> meetingIterable = participantRepository.findByMeetingId( meetingId );
         meetingIterable.forEach(participants::add);
-        return participants;
-        */
         return participantRepository.findByMeetingId( meetingId );
+        */
+        return participants;
     }
 
     public Participant getParticipant(int id) throws Exception {
-        //return participants.stream().filter( participant -> participant.getId() == id ).findFirst().orElseThrow();
-        return participantRepository.findById(id).orElseThrow(
-                () -> new Exception("No Participant found with id " + id) );
+        return participants.stream().filter( participant -> participant.getId() == id ).findFirst().get();
+        //return participantRepository.findById(id).orElseThrow(
+        //        () -> new Exception("No Participant found with id " + id) );
     }
 
     public Participant addParticipant(Participant participant, int meetingId) throws Exception {
@@ -53,21 +56,31 @@ public class ParticipantService {
             throw new Exception("No body found, participant is null");
         }
         participant.setMeeting(new Meeting( meetingId ) );
-        return participantRepository.save(participant);
+        participants.add( participant );
+        return participant;
+        //return participantRepository.save(participant);
     }
 
     public Participant updateParticipant(int participantId, int meetingId, Participant updatedParticipantData) throws Exception {
+        /*
         if( !participantRepository.existsById(participantId) ) {
             throw new Exception("No Participant found with id " + participantId);
         }
         updatedParticipantData.setMeeting( new Meeting( meetingId ) );
         return participantRepository.save( updatedParticipantData );
+        */
+        updatedParticipantData.setMeeting( new Meeting( meetingId ) );
+        participants.set( participantId, updatedParticipantData );
+        return updatedParticipantData;
     }
 
     public void deleteParticipant(int id) throws Exception {
+        /*
         if( !participantRepository.existsById(id) ) {
             throw new Exception("No Participant found with id " + id);
         }
         participantRepository.deleteById( id );
+        */
+        participants.remove( id );
     }
 }

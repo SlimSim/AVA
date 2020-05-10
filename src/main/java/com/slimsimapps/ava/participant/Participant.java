@@ -1,14 +1,15 @@
 package com.slimsimapps.ava.participant;
 
 import com.slimsimapps.ava.meeting.Meeting;
-
+/*
 import javax.persistence.*;
 
 @Entity
+*/
 public class Participant {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String name;
     private boolean breakingQuestion;
@@ -23,7 +24,7 @@ public class Participant {
     private long handRaisedTime;
 
 
-    @ManyToOne
+//    @ManyToOne
     private Meeting meeting;
 
     public Participant() {}
