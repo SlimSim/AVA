@@ -13,13 +13,6 @@
 <body>
     <h1>A Voting App</h1>
 
-    <table>
-        <tr th:each="meeting: ${meetings}">
-            <td th:text="${meeting.id}" />
-            <td th:text="${meeting.name}" />
-        </tr>
-    </table>
-
     <form action="#" th:action="@{/meeting}" method="post">
         <input type="text" id="name" name="name" />
         <input id="submit" class="btn btn-bd-primary" type="submit" value="Create new meeting" />

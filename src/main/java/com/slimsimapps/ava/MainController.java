@@ -27,10 +27,7 @@ public class MainController {
 
     @GetMapping({ "/", "/index", "/index/" })
     public ModelAndView index( ModelMap model ) {
-        log.info("index ->");
-        model.addAttribute("meetings", meetingService.getAllMeetings() );
         return new ModelAndView( "index", model );
-        //return "hello Ava!";
     }
 
 
