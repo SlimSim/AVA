@@ -1,14 +1,18 @@
 
 $( document ).ready(function() {
-    var updateTime = 250,
+    const meetingId = $( "#meetingId" ).val(),
+        participantUrl = "/meeting/" + meetingId + "/participants",
+        updateTime = 250;
 
-    getParticipants =  function() {
+    var getParticipants = function() {
+
         $.ajax({
-            url: "/meeting/1/participants"
+            url: participantUrl
         })
         .done( repopulateParticipantTable );
     },
 
+        /*
     killButton = function( text, value ) {
 
         if( !value ) {
@@ -18,7 +22,7 @@ $( document ).ready(function() {
             .addClass( "btn").addClass
 
 
-    },
+    },*/
 
     repopulateParticipantTable = function( participants ) {
 
@@ -37,6 +41,43 @@ $( document ).ready(function() {
 
             $( "#participants" ).append( row );
         });
+
+
+        // new:
+
+        /*
+        $( "#participants2" ).children().remove();
+        $.each( participants, (index, participant) => {
+            var status = "";
+
+
+            if( participant.breakingQuestion )  {
+                status += " Ordningsfråga";
+            }
+            if( participant.information )  {
+                status += " Sakupplysning";
+            }
+            if( participant.comment )  {
+                status += " Kommentar";
+            }
+            if( participant.requestToSpeak )  {
+                status += " Begär ordet";
+            }
+            if( participant.handRaised )  {
+                status += " Rösta JA";
+            }
+
+
+            var row = $( "<tr>" )
+                .append( $( "<td>" ).text() )
+                .append( $( "<td>" ).text(index + ", " + participant.name) )
+                .append( $( "<td>" ).text(status) );
+
+            $( "#participants2" ).append( row );
+        });
+        */
+
+
     },
 
     repeatedTasks = function(){

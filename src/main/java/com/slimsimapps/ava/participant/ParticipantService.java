@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParticipantService {
@@ -41,7 +42,7 @@ public class ParticipantService {
         meetingIterable.forEach(participants::add);
         return participantRepository.findByMeetingId( meetingId );
         */
-        return participants;
+        return participants.stream().filter(p -> p.getMeeting().getId() == meetingId).collect(Collectors.toList());
     }
 
     public Participant getParticipant(int id) throws Exception {
@@ -55,6 +56,17 @@ public class ParticipantService {
         if( participant == null ) {
             throw new Exception("No body found, participant is null");
         }
+
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (Participant p : participants) {
+            ids.add(p.getId());
+        }
+        int id = 1;
+        while( ids.contains( id ) ) {
+            id++;
+        }
+        participant.setId( id );
+
         participant.setMeeting(new Meeting( meetingId ) );
         participants.add( participant );
         return participant;
@@ -70,7 +82,16 @@ public class ParticipantService {
         return participantRepository.save( updatedParticipantData );
         */
         updatedParticipantData.setMeeting( new Meeting( meetingId ) );
-        participants.set( participantId, updatedParticipantData );
+        int participantIndex = -1;
+        for( int i = 0; i < participants.size(); i++ ) {
+            if( participants.get( i ).getId() != participantId ){
+                continue;
+            }
+            participantIndex = i;
+            break;
+        }
+
+        participants.set( participantIndex, updatedParticipantData );
         return updatedParticipantData;
     }
 
