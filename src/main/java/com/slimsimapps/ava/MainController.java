@@ -13,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
@@ -41,14 +44,16 @@ public class MainController {
     }
 
     @GetMapping("meeting/{id}")
-    public ModelAndView myMeeting(@PathVariable int id, ModelMap model ) throws Exception {
+    public ModelAndView myMeeting(@PathVariable int id, ModelMap model, HttpServletRequest request ) throws Exception {
         log.info("myMeeting ->");
         // TODO: fixa pushning av data när det uppdaterats m.a.p websockets, kolla:
         //          https://spring.io/guides/gs/messaging-stomp-websocket/
         Meeting m2 = meetingService.getMeeting( id );
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         model.addAttribute("participants", participantService.getAllParticipants( id ));
         model.addAttribute( "meetingId", m2.getId() );
         model.addAttribute( "meetingName", m2.getName() );
+        model.addAttribute("joinUrl", baseUrl + "/meeting/" + id + "/join");
         return new ModelAndView( "meeting", model );
     }
 

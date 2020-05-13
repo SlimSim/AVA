@@ -14,7 +14,11 @@
 </head>
 <body>
     <h1 th:text="${meetingName}" />
-    <h3>A Voting App</h3>
+    <input type="hidden" id="meetingId" th:value="${meetingId}"/>
+
+    <p class="smalls">Link for participants:
+        <a target="_blank" href="#" th:href="${joinUrl}" th:text="${joinUrl}"></a>
+    </p>
 
     <table class="table">
         <thead>
