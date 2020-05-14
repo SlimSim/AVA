@@ -28,54 +28,31 @@ $( document ).ready(function() {
 
         $( "#participants" ).children().remove();
         $.each( participants, (index, participant) => {
-            var row = $( "<tr>" )
-                .append( $( "<td>" ).text(index) )
-                .append( $( "<td>" ).text(participant.name) )
 
-                //.append( $( "<td>" ).append( killButton( "Ordningsfråga", participant.breakingQuestion ) ) )
-                .append( $( "<td>" ).text(participant.breakingQuestion?"Ordningsfråga":"") )
-                .append( $( "<td>" ).text(participant.information?"Sakupplysning":"") )
-                .append( $( "<td>" ).text(participant.comment?"Kommentar":"") )
-                .append( $( "<td>" ).text(participant.requestToSpeak?"Begär ordet":"") )
-                .append( $( "<td>" ).text(participant.handRaised?"Rösta JA":"") );
 
-            $( "#participants" ).append( row );
+            const individual = $( "<div>" ).addClass().addClass( "pb-1" );
+            const card = $( "<div>" ).addClass().addClass( "card" );
+            const cardBody = $( "<div>" ).addClass( "row" ).addClass( "card-body" ).addClass( "p-1 m-0" );
+            const nameArea = $( "<div>" ).addClass( "col" );
+            const name = $( "<p>" ).addClass("m-0").text( participant.name );
+
+            const statusArea = $( "<div>" ).addClass( "col" );
+
+
+            if( participant.breakingQuestion )  {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );}
+            if( participant.information )       {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );}
+            if( participant.comment )           {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );}
+            if( participant.requestToSpeak )    {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );}
+            if( participant.handRaised )        {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );}
+
+            statusArea.children().eq(0).addClass( "font-weight-bold" );
+
+            nameArea.append( name );
+            card.append( cardBody );
+            cardBody.append(nameArea).append(statusArea);
+            individual.append(card);
+            $( "#participants" ).append( individual );
         });
-
-
-        // new:
-
-        /*
-        $( "#participants2" ).children().remove();
-        $.each( participants, (index, participant) => {
-            var status = "";
-
-
-            if( participant.breakingQuestion )  {
-                status += " Ordningsfråga";
-            }
-            if( participant.information )  {
-                status += " Sakupplysning";
-            }
-            if( participant.comment )  {
-                status += " Kommentar";
-            }
-            if( participant.requestToSpeak )  {
-                status += " Begär ordet";
-            }
-            if( participant.handRaised )  {
-                status += " Rösta JA";
-            }
-
-
-            var row = $( "<tr>" )
-                .append( $( "<td>" ).text() )
-                .append( $( "<td>" ).text(index + ", " + participant.name) )
-                .append( $( "<td>" ).text(status) );
-
-            $( "#participants2" ).append( row );
-        });
-        */
 
 
     },
