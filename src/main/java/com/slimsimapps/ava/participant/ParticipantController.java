@@ -76,7 +76,6 @@ public class ParticipantController {
 
     @GetMapping("/meeting/{meetingId}/participants/{id}")
     public Participant getParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
-        log.info( "getParticipant -> id = " + id);
         return participantService.getParticipant( id ); //TODO: lägg till meetingId här, för en extra koll :)
     }
 
@@ -88,16 +87,12 @@ public class ParticipantController {
 
     @PutMapping( "/meeting/{meetingId}/participants/{id}" )
     public Participant updateParticipant( @PathVariable int meetingId, @PathVariable int id, @RequestBody Participant participant ) throws Exception {
-        log.info( "updateParticipant -> id = " + id);
-        log.info( "updateParticipant -> participant = " + participant);
         //participant.setMeeting( new Meeting( meetingId ) );
-
         return participantService.updateParticipant( id, meetingId, participant );
     }
 
     @PostMapping( "/meeting/{meetingId}/participants/{id}" )
     public Participant setParticipant( @PathVariable int meetingId, @PathVariable int id, @RequestBody Participant participant ) throws Exception {
-        log.info( "setParticipant -> id = " + id);
         return participantService.updateParticipant( id, meetingId, participant );
     }
 
@@ -105,27 +100,5 @@ public class ParticipantController {
     public void deleteParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
         participantService.deleteParticipant( id ); //TODO: lägg till meetingId här, för en extra koll :)
     }
-
-/*
-    @PostMapping("/participants2")
-    public String createMe2(Participant participant ) {
-        System.out.println("createMe ->");
-        log.trace("createMe2 -> trace");
-        log.info("createMe2 -> info");
-        log.debug("createMe2 -> debug");
-        log.warn("createMe2 -> warn");
-        System.out.println("createMe2");
-        Participant p2 = new Participant();
-        try {
-            p2 = participantService.addParticipant(participant);
-        } catch ( Exception e ) {
-            log.error("createMe could not add participant: " + e.getMessage() + " " + e.getCause());
-        }
-
-        //model.addAttribute("participant", p2 );
-
-        return "me";
-    }
-    */
 
 }

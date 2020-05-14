@@ -22,18 +22,6 @@ public class ParticipantService {
 
     List<Participant> participants = new ArrayList<>();
 
-    /*
-    List<Participant> participants = new ArrayList<>( Arrays. asList(
-            new Participant(1, "Adam", false, false, false),
-            new Participant(2, "Berit", true, false, false),
-            new Participant(3, "Cesar", false, false, false),
-            new Participant(4, "Doris", false, false, true),
-            new Participant(5, "Erika", false, true, false),
-            new Participant(6, "Filippa", false, false, true)
-    ) );
-    */
-
-
 
     public List<Participant> getAllParticipants( int meetingId ) {
         /*
@@ -52,7 +40,6 @@ public class ParticipantService {
     }
 
     public Participant addParticipant(Participant participant, int meetingId) throws Exception {
-        log.info("createMe: participant = " + participant);
         if( participant == null ) {
             throw new Exception("No body found, participant is null");
         }
