@@ -16,11 +16,19 @@
     <h1 th:text="${meetingName}" />
     <input type="hidden" id="meetingId" th:value="${meetingId}"/>
 
-    <p class="small">Länk till deltagare:
+    <p class="small mb-2">Länk till deltagare:
         <a target="_blank" href="#" th:href="${joinUrl}" th:text="${joinUrl}"></a>
     </p>
 
-    <h2 class="h6">Talarlista</h2>
+    <h2 class="h6 mb-0">Status</h2>
+    <span class="pr-2 small text-nowrap">Deltagare: <span id="participantCounter">0</span></span>
+    <span class="pr-2 small text-nowrap">Ordningsfråga: <span id="breakingQuestionCounter">0</span></span>
+    <span class="pr-2 small text-nowrap">Sakupplysning: <span id="informationCounter">0</span></span>
+    <span class="pr-2 small text-nowrap">Kommentar: <span id="commentCounter">0</span></span>
+    <span class="pr-2 small text-nowrap">Begär ordet: <span id="requestToSpeakCounter">0</span></span>
+    <span class="pr-2 small text-nowrap">Rösta JA: <span id="handRaisedCounter">0</span></span>
+
+    <h2 class="h6 pt-2">Talarlista</h2>
     <div id="participants"></div>
 
 </body>

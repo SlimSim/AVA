@@ -27,6 +27,13 @@ $( document ).ready(function() {
     repopulateParticipantTable = function( participants ) {
 
         $( "#participants" ).children().remove();
+        let breakingQuestionCounter = 0;
+        let informationCounter = 0;
+        let commentCounter = 0;
+        let requestToSpeakCounter = 0;
+        let handRaisedCounter = 0;
+
+
         $.each( participants, (index, participant) => {
 
 
@@ -39,11 +46,26 @@ $( document ).ready(function() {
             const statusArea = $( "<div>" ).addClass( "col" );
 
 
-            if( participant.breakingQuestion )  {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );}
-            if( participant.information )       {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );}
-            if( participant.comment )           {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );}
-            if( participant.requestToSpeak )    {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );}
-            if( participant.handRaised )        {   statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );}
+            if( participant.breakingQuestion )  {
+                breakingQuestionCounter++;
+                statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
+            }
+            if( participant.information )       {
+                informationCounter++;
+                statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );
+            }
+            if( participant.comment )           {
+                commentCounter++;
+                statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
+            }
+            if( participant.requestToSpeak )    {
+                requestToSpeakCounter++;
+                statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );
+            }
+            if( participant.handRaised )        {
+                handRaisedCounter++;
+                statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
+            }
 
             statusArea.children().eq(0).addClass( "font-weight-bold" );
 
@@ -53,6 +75,14 @@ $( document ).ready(function() {
             individual.append(card);
             $( "#participants" ).append( individual );
         });
+
+
+        $( "#participantCounter" ).text( participants.length );
+        $( "#breakingQuestionCounter" ).text( breakingQuestionCounter );
+        $( "#informationCounter" ).text( informationCounter );
+        $( "#commentCounter" ).text( commentCounter );
+        $( "#requestToSpeakCounter" ).text( requestToSpeakCounter );
+        $( "#handRaisedCounter" ).text( handRaisedCounter );
 
 
     },
