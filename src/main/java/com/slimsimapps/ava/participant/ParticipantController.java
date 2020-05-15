@@ -21,6 +21,67 @@ public class ParticipantController {
     @Autowired
     ParticipantService participantService;
 
+    @GetMapping("/meeting/{meetingId}/speakerQue")
+    public List<Participant> getSpeakerQue( @PathVariable int meetingId){
+        List<Participant> x = participantService.getAllParticipants( meetingId );
+
+        List<Participant> HandRaisedParticipantList = new ArrayList<>();
+        List<Participant> RequestToSpeakParticipantList = new ArrayList<>();
+        List<Participant> CommentParticipantList = new ArrayList<>();
+        List<Participant> InformationParticipantList = new ArrayList<>();
+        List<Participant> BreakingQuestionParticipantList = new ArrayList<>();
+
+        List<Participant> sortedParticipantList = new ArrayList<>();
+
+        x.forEach( p -> {
+            if( p.isBreakingQuestion() ) {
+                Participant p2 = new Participant( p.getName() );
+                p2.setBreakingQuestion( true );
+                p2.setBreakingQuestionTime( p.getBreakingQuestionTime() );
+                BreakingQuestionParticipantList.add( p2 );
+            }
+            if( p.isInformation() ) {
+                Participant p2 = new Participant( p.getName() );
+                p2.setInformation( true );
+                p2.setInformationTime( p.getInformationTime() );
+                InformationParticipantList.add( p2 );
+            }
+            if( p.isComment() ) {
+                Participant p2 = new Participant( p.getName() );
+                p2.setComment( true );
+                p2.setCommentTime( p.getCommentTime() );
+                CommentParticipantList.add( p2 );
+            }
+            if( p.isRequestToSpeak() ) {
+                Participant p2 = new Participant( p.getName() );
+                p2.setRequestToSpeak( true );
+                p2.setRequestToSpeakTime( p.getRequestToSpeakTime() );
+                RequestToSpeakParticipantList.add( p2 );
+            }
+            if( p.isHandRaised() ) {
+                Participant p2 = new Participant( p.getName() );
+                p2.setHandRaised( true );
+                p2.setHandRaisedTime( p.getHandRaisedTime() );
+                HandRaisedParticipantList.add( p2 );
+            }
+        });
+
+
+        HandRaisedParticipantList.sort( Comparator.comparing(Participant::getHandRaisedTime));
+        RequestToSpeakParticipantList.sort( Comparator.comparing(Participant::getRequestToSpeakTime));
+        CommentParticipantList.sort( Comparator.comparing(Participant::getCommentTime));
+        InformationParticipantList.sort( Comparator.comparing(Participant::getInformationTime));
+        BreakingQuestionParticipantList.sort( Comparator.comparing(Participant::getBreakingQuestionTime));
+
+        sortedParticipantList.addAll(BreakingQuestionParticipantList);
+        sortedParticipantList.addAll(InformationParticipantList);
+        sortedParticipantList.addAll(CommentParticipantList);
+        sortedParticipantList.addAll(RequestToSpeakParticipantList);
+        sortedParticipantList.addAll(HandRaisedParticipantList);
+
+        return sortedParticipantList;
+    }
+
     @GetMapping("/meeting/{meetingId}/participants")
     public List<Participant> getAllParticipants( @PathVariable int meetingId){
         List<Participant> x = participantService.getAllParticipants( meetingId );

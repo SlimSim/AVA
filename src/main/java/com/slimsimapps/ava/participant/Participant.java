@@ -29,6 +29,11 @@ public class Participant {
 
     public Participant() {}
 
+    public Participant(String name) {
+        super();
+        this.name = name;
+    }
+
     public Participant(
             int id,
             String name,
