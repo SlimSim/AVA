@@ -1,16 +1,45 @@
 
+
+
+
+
+
+
+
+
+
+
 $( document ).ready(function() {
     const meetingId = $( "#meetingId" ).val(),
         speakerQueUrl = "/meeting/" + meetingId + "/speakerQue",
         participantsUrl = "/meeting/" + meetingId + "/participants",
-        updateTime = 250;
+        updateTime = 250 * 1000;
 
-    var getSpeakerQue = function() {
+
+    var stompClient = null,
+
+
+    getSpeakerQue = function() {
 
         $.ajax({
             url: speakerQueUrl
         })
         .done( repopulateSpeakerQue );
+    },
+
+    showGreeting =function(message) {
+        $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    },
+
+    connect = function() {
+        var socket = new SockJS('/gs-guide-websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/greetings', function (greeting) {
+                showGreeting(JSON.parse(greeting.body).content);
+            });
+        });
     },
 
     getParticipants = function() {
@@ -111,6 +140,8 @@ $( document ).ready(function() {
 
         setTimeout( repeatedTasks, updateTime );
     };
+
+    connect();
 
     repeatedTasks();
 

@@ -2,11 +2,13 @@ package com.slimsimapps.ava.participant;
 
 import com.slimsimapps.ava.MainController;
 import com.slimsimapps.ava.meeting.Meeting;
+import com.slimsimapps.ava.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +33,24 @@ public class ParticipantService {
         return participantRepository.findByMeetingId( meetingId );
         */
         return participants.stream().filter(p -> p.getMeeting().getId() == meetingId).collect(Collectors.toList());
+    }
+
+    public Participant setParticipantRequest(int participantId, Request.TypeOfRequest typeOfRequest, boolean active ) throws Exception {
+        Participant p = getParticipant( participantId );
+
+        if( typeOfRequest == Request.TypeOfRequest.breakingQuestion ) {
+            p.setBreakingQuestion( active );
+        } else if ( typeOfRequest == Request.TypeOfRequest.information ) {
+            p.setInformation( active );
+        } else if ( typeOfRequest == Request.TypeOfRequest.comment ) {
+            p.setComment( active );
+        } else if ( typeOfRequest == Request.TypeOfRequest.requestToSpeak ) {
+            p.setRequestToSpeak( active );
+        } else if ( typeOfRequest == Request.TypeOfRequest.handRaised ) {
+            p.setHandRaised( active );
+        }
+
+        return updateParticipant( participantId, p.getMeeting().getId(), p );
     }
 
     public Participant getParticipant(int id) throws Exception {

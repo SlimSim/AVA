@@ -8,6 +8,8 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 
     <link href="/css/main.css" rel="stylesheet">
     <script src="/js/meeting.js"></script>
@@ -27,6 +29,17 @@
     <span class="pr-2 small text-nowrap">Kommentar: <span id="commentCounter">0</span></span>
     <span class="pr-2 small text-nowrap">Begär ordet: <span id="requestToSpeakCounter">0</span></span>
     <span class="pr-2 small text-nowrap">Rösta JA: <span id="handRaisedCounter">0</span></span>
+
+
+    <table id="conversation" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Greetings</th>
+        </tr>
+        </thead>
+        <tbody id="greetings">
+        </tbody>
+    </table>
 
     <h2 class="h6 pt-2">Talarlista</h2>
     <div id="speakerQue"></div>
