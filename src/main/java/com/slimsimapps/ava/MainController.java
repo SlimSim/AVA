@@ -67,22 +67,12 @@ public class MainController {
         return "createMe";
     }
 
-
-    //@Autowired
-    //private SimpMessagingTemplate template;
-    //this.template.convertAndSend("/topic/newParticipant", p2);
-
     @PostMapping("meeting/{meetingId}/participant")
     public ModelAndView createMeetingParticipant(@PathVariable int meetingId, Participant p, ModelMap model ) throws Exception {
         log.info("createMeetingParticipant ->");
         Participant p2 = participantService.addParticipant(p, meetingId);
 
         String url = "/meeting/" + meetingId + "/participant/" + p2.getId();
-
-        System.out.println("addParticipant: p2 = " + p2);
-        //this.template.convertAndSend("/topic/newParticipant", p2);
-
-
 
         return new ModelAndView( "redirect:" + url);
     }
