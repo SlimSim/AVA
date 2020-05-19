@@ -3,9 +3,13 @@ package com.slimsimapps.ava.participant;
 
 import com.slimsimapps.ava.MainController;
 import com.slimsimapps.ava.meeting.Meeting;
+import com.slimsimapps.ava.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,31 +39,31 @@ public class ParticipantController {
 
         x.forEach( p -> {
             if( p.isBreakingQuestion() ) {
-                Participant p2 = new Participant( p.getName() );
+                Participant p2 = new Participant( p.getName(), p.getId() );
                 p2.setBreakingQuestion( true );
                 p2.setBreakingQuestionTime( p.getBreakingQuestionTime() );
                 BreakingQuestionParticipantList.add( p2 );
             }
             if( p.isInformation() ) {
-                Participant p2 = new Participant( p.getName() );
+                Participant p2 = new Participant( p.getName(), p.getId() );
                 p2.setInformation( true );
                 p2.setInformationTime( p.getInformationTime() );
                 InformationParticipantList.add( p2 );
             }
             if( p.isComment() ) {
-                Participant p2 = new Participant( p.getName() );
+                Participant p2 = new Participant( p.getName(), p.getId() );
                 p2.setComment( true );
                 p2.setCommentTime( p.getCommentTime() );
                 CommentParticipantList.add( p2 );
             }
             if( p.isRequestToSpeak() ) {
-                Participant p2 = new Participant( p.getName() );
+                Participant p2 = new Participant( p.getName(), p.getId() );
                 p2.setRequestToSpeak( true );
                 p2.setRequestToSpeakTime( p.getRequestToSpeakTime() );
                 RequestToSpeakParticipantList.add( p2 );
             }
             if( p.isHandRaised() ) {
-                Participant p2 = new Participant( p.getName() );
+                Participant p2 = new Participant( p.getName(), p.getId() );
                 p2.setHandRaised( true );
                 p2.setHandRaisedTime( p.getHandRaisedTime() );
                 HandRaisedParticipantList.add( p2 );
@@ -140,11 +144,46 @@ public class ParticipantController {
         return participantService.getParticipant( id ); //TODO: lägg till meetingId här, för en extra koll :)
     }
 
+    /*
+    @MessageMapping("/request")
+    @SendTo("/topic/newParticipant")
+    public Request request(Request request) throws Exception {
+        System.out.println( "RequestController.request ->");
+        System.out.println( "RequestController.request: request = " + request);
+
+        Participant p = participantService.setParticipantRequest( request.getParticipantId(), request.getTypeOfRequest(), request.isActive() );
+        System.out.println( "RequestController.request: p = " + p);
+
+        return request;
+    }
+
+
+    @RequestMapping(value = "/sendMessage")
+    public void sendMessage() throws Exception {
+        this.template.convertAndSend("/topic/greetings", new HelloMessage(
+                (int) Math.random(), "This is Send From Server"));
+    }
+    */
+
+
+    @Autowired
+    private SimpMessagingTemplate template;
+
     @PostMapping("/meeting/{meetingId}/participants")
     public Participant addParticipant( @PathVariable int meetingId, @RequestBody Participant participant ) throws Exception {
         System.out.println("addParticipant ->");
-        return participantService.addParticipant(participant, meetingId);
+
+        Participant p = participantService.addParticipant(participant, meetingId);
+        System.out.println("addParticipant: p = " + p);
+        this.template.convertAndSend("/topic/newParticipant", p);
+
+        return p;
     }
+
+
+
+
+
 
     @PutMapping( "/meeting/{meetingId}/participants/{id}" )
     public Participant updateParticipant( @PathVariable int meetingId, @PathVariable int id, @RequestBody Participant participant ) throws Exception {

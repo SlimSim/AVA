@@ -42,15 +42,20 @@ $( document ).ready(function() {
             })
         );
     },*/
-    sendRequest = function(participantId, typeOfRequest, active) {
+    sendRequest = function(participantId, participantName, typeOfRequest, active) {
+        const obj = {
+            "participantId": participantId,
+            "participantName" : participantName,
+            "typeOfRequest" : typeOfRequest,
+            "active" : active
+        };
+
+        console.log( "obj", obj );
+
         stompClient.send(
             "/app/request",
             {},
-            JSON.stringify({
-                "participantId": participantId,
-                "typeOfRequest" : typeOfRequest,
-                "active" : active
-            })
+            JSON.stringify( obj )
         );
     },
 
@@ -60,19 +65,32 @@ $( document ).ready(function() {
     },
 
     submitForm = function( event ) {
+        console.log("submitForm -> ");
+        event.preventDefault();
+    },
+
+    submitForm2 = function( event ) {
         event.preventDefault();
         console.log( "event", event );
+        console.log( "this", this );
+
         var data = {},
+            $target = $( event.target ),
             name = $( event.originalEvent.submitter ).text(),
-            typeOfRequest = $( event.originalEvent.submitter ).attr( "id" ),
+            typeOfRequest = $target.attr( "id" ),
             participantId = $("#participantId").val(),
-            active = $( event.originalEvent.submitter ).hasClass( "active" )
+            participantName = $("#participantName").text(),
+            active = !$target.hasClass( "active" ),
             $form = $( this ),
             url = $form.attr('action');
-        console.log("typeOfRequest", typeOfRequest);
         console.log("participantId", participantId);
+        console.log("participantName", participantName);
+        console.log("typeOfRequest", typeOfRequest);
         console.log("active", active);
+        console.log("name", name);
+        console.log("event.originalEvent.submitter", event.originalEvent.submitter);
 
+        /*
         $("#participantForm").find("button").each( (i, el) => {
             var $button = $( el );
             data[ $button.attr( "id" ) ] = $button.hasClass( "active" );
@@ -82,10 +100,11 @@ $( document ).ready(function() {
             var $button = $( el );
             data[ $button.attr( "id" ) ] = $button.val()
         });
+        */
 
 
 
-        sendRequest(participantId, typeOfRequest, active);
+        sendRequest(participantId, participantName, typeOfRequest, active);
 /*
         $.ajax({
             method: "PUT",
@@ -100,7 +119,9 @@ $( document ).ready(function() {
 
     connect();
 
-    $( "#participantForm" ).on( "submit", submitForm );
+    //$( "#participantForm" ).on( "submit", submitForm );
+
+    $( ".request-button" ).on( "click", submitForm2 );
 
     $( "[data-time-changed]" ).on( "click", addTimeChanged);
 

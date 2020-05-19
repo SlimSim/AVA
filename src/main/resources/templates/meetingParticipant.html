@@ -15,23 +15,23 @@
     <link href="/css/main.css" rel="stylesheet">
     <script src="/js/participant.js"></script>
 </head>
-<body>
+<p>
     <h1 th:text="${meetingName}" />
     <h3>A Voting App</h3>
     <input type="hidden" id="participantId" th:value="${participantId}" value="" />
 
-    <p th:text="'Hej, ' + ${participant.name} + '!'" />
+    <p>Hej, <span id="participantName" th:text="${participant.name}" />!</p>
 
     <form id="participantForm" action="#" th:action="@{/meeting/__${meetingId}__/participants/__${participantId}__}" th:object="${participant}" method="post">
 
         <input type="hidden" id="id" name="id" th:value="${participant.id}" />
         <input type="hidden" id="name" name="name" th:value="${participant.name}" />
 
-        <button data-toggle="button" data-time-changed="0" class="btn btn-block btn-outline-danger" id="breakingQuestion">Ordningsfråga</button>
-        <button data-toggle="button" data-time-changed="0" class="btn btn-block btn-outline-warning" id="information">Sakupplysning</button>
-        <button data-toggle="button" data-time-changed="0" class="btn btn-block btn-outline-info" id="comment">Kommentar</button>
-        <button data-toggle="button" data-time-changed="0" class="btn btn-block btn-outline-dark" id="requestToSpeak">Begär ordet</button>
-        <button data-toggle="button" data-time-changed="0" class="btn btn-block btn-outline-success" id="handRaised">Rösta JA</button>
+        <button type="button" data-toggle="button" data-time-changed="0" class="btn request-button btn-block btn-outline-danger" id="breakingQuestion">Ordningsfråga</button>
+        <button type="button" data-toggle="button" data-time-changed="0" class="btn request-button btn-block btn-outline-warning" id="information">Sakupplysning</button>
+        <button type="button" data-toggle="button" data-time-changed="0" class="btn request-button btn-block btn-outline-info" id="comment">Kommentar</button>
+        <button type="button" data-toggle="button" data-time-changed="0" class="btn request-button btn-block btn-outline-dark" id="requestToSpeak">Begär ordet</button>
+        <button type="button" data-toggle="button" data-time-changed="0" class="btn request-button btn-block btn-outline-success" id="handRaised">Rösta JA</button>
 
     </form>
 

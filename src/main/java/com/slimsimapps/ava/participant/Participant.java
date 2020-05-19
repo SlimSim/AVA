@@ -34,6 +34,12 @@ public class Participant {
         this.name = name;
     }
 
+    public Participant(String name, int id) {
+        super();
+        this.name = name;
+        this.id = id;
+    }
+
     public Participant(
             int id,
             String name,

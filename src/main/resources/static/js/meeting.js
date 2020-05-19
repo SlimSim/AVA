@@ -12,9 +12,7 @@
 $( document ).ready(function() {
     const meetingId = $( "#meetingId" ).val(),
         speakerQueUrl = "/meeting/" + meetingId + "/speakerQue",
-        participantsUrl = "/meeting/" + meetingId + "/participants",
-        updateTime = 250 * 1000;
-
+        participantsUrl = "/meeting/" + meetingId + "/participants";
 
     var stompClient = null,
 
@@ -27,17 +25,15 @@ $( document ).ready(function() {
         .done( repopulateSpeakerQue );
     },
 
-    showGreeting =function(message) {
-        $("#greetings").append("<tr><td>" + message + "</td></tr>");
-    },
-
     connect = function() {
         var socket = new SockJS('/gs-guide-websocket');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/greetings', function (greeting) {
-                showGreeting(JSON.parse(greeting.body).content);
+            stompClient.subscribe('/topic/newParticipant', function (response) {
+                addParticipant( JSON.parse( response.body ) );
+            });
+            stompClient.subscribe('/topic/request', function (response) {
+                addRequest( JSON.parse( response.body ) );
             });
         });
     },
@@ -61,6 +57,119 @@ $( document ).ready(function() {
 
     },*/
 
+    addParticipant = function( participant ) {
+
+        const name = $( "<li>" )
+            .addClass("m-0 p-1 border-bottom-0 list-group-item")
+            .text( participant.name );
+
+        $( "#participants" ).append( name );
+
+        updateParticipantCounter();
+    },
+
+    updateParticipantCounter = function() {
+        $( "#participantCounter" ).text( $( "#participants" ).children().length );
+    },
+
+    addRequest = function(request) {
+        $("#speakerQue").append("<tr><td>" + request.participantName + " " + request.typeOfRequest + "</td></tr>");
+
+        if( request.active ) {
+            createSpeakerQueRow( request.participantId, request.participantName, request.typeOfRequest );
+        } else {
+            removeSpeakerQueRow( request.participantId, request.typeOfRequest );
+        }
+    },
+
+    removeSpeakerQueRow = function( participantId, typeOfRequest ) {
+
+        let currentQue = "";
+        if( typeOfRequest == "breakingQuestion" )  {
+            currentQue = "#speakerQueBreakingQuestion";
+            decrementHtmlCounter( "#breakingQuestionCounter" );
+        }
+        if( typeOfRequest == "information" )       {
+            currentQue = "#speakerQueInformation";
+            decrementHtmlCounter( "#informationCounter" );
+        }
+        if( typeOfRequest == "comment" )           {
+            currentQue = "#speakerQueComment";
+            decrementHtmlCounter( "#commentCounter" );
+        }
+        if( typeOfRequest == "requestToSpeak" )    {
+            currentQue = "#speakerQueRequestToSpeak";
+            decrementHtmlCounter( "#requestToSpeakCounter" );
+        }
+        if( typeOfRequest == "handRaised" )        {
+            currentQue = "#speakerQueHandRaised";
+            decrementHtmlCounter( "#handRaisedCounter" );
+        }
+        const row = $(currentQue).find( "[participant-id=" + participantId + "]" );
+
+        row.remove();
+    },
+
+    incrementHtmlCounter = function( selector ) {
+        $( selector ).text( Number( $( selector ).text() ) + 1 );
+    },
+
+    decrementHtmlCounter = function( selector ) {
+        $( selector ).text( Number( $( selector ).text() ) - 1 );
+    },
+
+    createSpeakerQueRow = function( participantId, participantName, typeOfRequest ) {
+
+        const individual = $( "<div>" ).attr("participant-id", participantId).addClass( "pb-1" );
+        const card = $( "<div>" ).addClass().addClass( "card" );
+        const cardBody = $( "<div>" ).addClass( "row" ).addClass( "card-body" ).addClass( "p-1 m-0" );
+        const nameArea = $( "<div>" ).addClass( "col" );
+        const name = $( "<p>" ).addClass("m-0").text( participantName );
+
+        let currentQue = "";
+
+        const statusArea = $( "<div>" ).addClass( "col" );
+
+        if( typeOfRequest == "breakingQuestion" )  {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
+            currentQue = "#speakerQueBreakingQuestion";
+            incrementHtmlCounter( "#breakingQuestionCounter" );
+        }
+        if( typeOfRequest == "information" )       {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );
+            currentQue = "#speakerQueInformation";
+            incrementHtmlCounter( "#informationCounter" );
+        }
+        if( typeOfRequest == "comment" )           {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
+            currentQue = "#speakerQueComment";
+            incrementHtmlCounter( "#commentCounter" );
+        }
+        if( typeOfRequest == "requestToSpeak" )    {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );
+            currentQue = "#speakerQueRequestToSpeak";
+            incrementHtmlCounter( "#requestToSpeakCounter" );
+        }
+        if( typeOfRequest == "handRaised" )        {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
+            currentQue = "#speakerQueHandRaised";
+            incrementHtmlCounter( "#handRaisedCounter" );
+        }
+
+        /*
+        if( first ) {
+            statusArea.children().eq(0).addClass( "font-weight-bold" );
+            first = false;
+        }
+        */
+
+        nameArea.append( name );
+        card.append( cardBody );
+        cardBody.append(nameArea).append(statusArea);
+        individual.append(card);
+        $( currentQue ).append( individual );
+    },
+
     repopulateSpeakerQue = function( speakerRequests ) {
         $( "#speakerQue" ).children().remove();
         let breakingQuestionCounter = 0;
@@ -72,35 +181,31 @@ $( document ).ready(function() {
 
         $.each( speakerRequests, (index, participant) => {
 
+            createSpeakerQueRow( participant.id, participant.name, participant.typeOfRequest );
+
+            if( participant.breakingQuestion )  {
+                createSpeakerQueRow( participant.id, participant.name, "breakingQuestion" );
+            } else if( participant.information )       {
+                createSpeakerQueRow( participant.id, participant.name, "information" );
+            } else if( participant.comment )           {
+                createSpeakerQueRow( participant.id, participant.name, "comment" );
+            } else if( participant.requestToSpeak )    {
+                createSpeakerQueRow( participant.id, participant.name, "requestToSpeak" );
+            } else if( participant.handRaised )        {
+                createSpeakerQueRow( participant.id, participant.name, "handRaised" );
+            }
+
+/*
             const individual = $( "<div>" ).addClass().addClass( "pb-1" );
             const card = $( "<div>" ).addClass().addClass( "card" );
             const cardBody = $( "<div>" ).addClass( "row" ).addClass( "card-body" ).addClass( "p-1 m-0" );
             const nameArea = $( "<div>" ).addClass( "col" );
             const name = $( "<p>" ).addClass("m-0").text( participant.name );
 
+            let currentQue = "";
+
             const statusArea = $( "<div>" ).addClass( "col" );
 
-
-            if( participant.breakingQuestion )  {
-                breakingQuestionCounter++;
-                statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
-            }
-            if( participant.information )       {
-                informationCounter++;
-                statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );
-            }
-            if( participant.comment )           {
-                commentCounter++;
-                statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
-            }
-            if( participant.requestToSpeak )    {
-                requestToSpeakCounter++;
-                statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );
-            }
-            if( participant.handRaised )        {
-                handRaisedCounter++;
-                statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
-            }
 
             if( first ) {
                 statusArea.children().eq(0).addClass( "font-weight-bold" );
@@ -111,14 +216,9 @@ $( document ).ready(function() {
             card.append( cardBody );
             cardBody.append(nameArea).append(statusArea);
             individual.append(card);
-            $( "#speakerQue" ).append( individual );
+            $( currentQue ).append( individual );
+            */
         });
-
-        $( "#breakingQuestionCounter" ).text( breakingQuestionCounter );
-        $( "#informationCounter" ).text( informationCounter );
-        $( "#commentCounter" ).text( commentCounter );
-        $( "#requestToSpeakCounter" ).text( requestToSpeakCounter );
-        $( "#handRaisedCounter" ).text( handRaisedCounter );
 
     },
 
@@ -132,18 +232,12 @@ $( document ).ready(function() {
 
         $( "#participantCounter" ).text( participants.length );
 
-    },
-
-    repeatedTasks = function(){
-        getSpeakerQue();
-        getParticipants();
-
-        setTimeout( repeatedTasks, updateTime );
     };
 
     connect();
 
-    repeatedTasks();
+    getSpeakerQue();
+    getParticipants();
 
 });
 

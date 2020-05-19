@@ -3,6 +3,7 @@ package com.slimsimapps.ava.request;
 public class Request {
 
     private int participantId;
+    private String participantName;
     private TypeOfRequest typeOfRequest;
     private boolean active;
 
@@ -12,6 +13,14 @@ public class Request {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getParticipantName() {
+        return participantName;
+    }
+
+    public void setParticipantName(String participantName) {
+        this.participantName = participantName;
     }
 
     public enum TypeOfRequest {
@@ -48,6 +57,7 @@ public class Request {
 
     public String toString(){
         return "participantId " + participantId
+                + ", participantName " + participantName
                 + ", typeOfRequest " + typeOfRequest
                 + ", active " + active
                 ;

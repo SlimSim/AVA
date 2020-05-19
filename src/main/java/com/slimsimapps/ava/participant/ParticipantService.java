@@ -6,10 +6,12 @@ import com.slimsimapps.ava.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Part;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,9 @@ public class ParticipantService {
 
     //@Autowired
     //private ParticipantRepository participantRepository;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
 
     Logger log = LoggerFactory.getLogger(MainController.class);
@@ -40,14 +45,19 @@ public class ParticipantService {
 
         if( typeOfRequest == Request.TypeOfRequest.breakingQuestion ) {
             p.setBreakingQuestion( active );
+            p.setBreakingQuestionTime( new Date().getTime() );
         } else if ( typeOfRequest == Request.TypeOfRequest.information ) {
             p.setInformation( active );
+            p.setInformationTime( new Date().getTime() );
         } else if ( typeOfRequest == Request.TypeOfRequest.comment ) {
             p.setComment( active );
+            p.setCommentTime( new Date().getTime() );
         } else if ( typeOfRequest == Request.TypeOfRequest.requestToSpeak ) {
             p.setRequestToSpeak( active );
+            p.setRequestToSpeakTime( new Date().getTime() );
         } else if ( typeOfRequest == Request.TypeOfRequest.handRaised ) {
             p.setHandRaised( active );
+            p.setHandRaisedTime( new Date().getTime() );
         }
 
         return updateParticipant( participantId, p.getMeeting().getId(), p );
@@ -76,6 +86,9 @@ public class ParticipantService {
 
         participant.setMeeting(new Meeting( meetingId ) );
         participants.add( participant );
+
+        template.convertAndSend("/topic/newParticipant", participant);
+
         return participant;
         //return participantRepository.save(participant);
     }
@@ -109,6 +122,7 @@ public class ParticipantService {
         }
         participantRepository.deleteById( id );
         */
+
         participants.remove( id );
     }
 }

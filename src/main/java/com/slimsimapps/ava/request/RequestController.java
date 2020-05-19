@@ -16,24 +16,16 @@ public class RequestController {
     ParticipantService participantService;
 
     @MessageMapping("/request")
-    @SendTo("/topic/greetings")
-    public Greeting request(Request request) throws Exception {
+    @SendTo("/topic/request")
+    public Request request(Request request) throws Exception {
         System.out.println( "RequestController.request ->");
-        System.out.println( "RequestController.request: message = " + request);
+        System.out.println( "RequestController.request: request = " + request);
 
-	Participant p = participantService.setParticipantRequest( request.getParticipantId(), request.getTypeOfRequest(), request.isActive() );
+        // TODO: flytta SendTo till participantService (och använd termplate.convertAndSend
+	    Participant p = participantService.setParticipantRequest( request.getParticipantId(), request.getTypeOfRequest(), request.isActive() );
         System.out.println( "RequestController.request: p = " + p);
 
-        String greeting = "";
-
-        if( request.isActive() ) {
-            greeting = p.getName() + " requests " + request.getTypeOfRequest();
-        } else {
-            greeting = p.getName() + " retracts " + request.getTypeOfRequest();
-        }
-
-	
-        return new Greeting( greeting );
+        return request;
     }
 
 /*
