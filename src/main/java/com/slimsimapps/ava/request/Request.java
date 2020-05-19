@@ -33,9 +33,10 @@ public class Request {
 
     public Request() {}
 
-    public Request(int participantId, TypeOfRequest typeOfRequest, boolean active) {
+    public Request(int participantId, String name, TypeOfRequest typeOfRequest, boolean active) {
         super();
         this.participantId = participantId;
+        this.participantName = name;
         this.typeOfRequest = typeOfRequest;
         this.active = active;
     }

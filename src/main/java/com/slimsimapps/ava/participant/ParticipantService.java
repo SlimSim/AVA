@@ -40,7 +40,11 @@ public class ParticipantService {
         return participants.stream().filter(p -> p.getMeeting().getId() == meetingId).collect(Collectors.toList());
     }
 
-    public Participant setParticipantRequest(int participantId, Request.TypeOfRequest typeOfRequest, boolean active ) throws Exception {
+    public Participant setParticipantRequest( Request request ) throws Exception {
+        int participantId = request.getParticipantId();
+        Request.TypeOfRequest typeOfRequest = request.getTypeOfRequest();
+        boolean active = request.isActive();
+
         Participant p = getParticipant( participantId );
 
         if( typeOfRequest == Request.TypeOfRequest.breakingQuestion ) {
@@ -59,6 +63,8 @@ public class ParticipantService {
             p.setHandRaised( active );
             p.setHandRaisedTime( new Date().getTime() );
         }
+
+        template.convertAndSend("/topic/request", request);
 
         return updateParticipant( participantId, p.getMeeting().getId(), p );
     }
