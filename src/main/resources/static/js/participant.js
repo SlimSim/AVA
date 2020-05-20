@@ -6,7 +6,17 @@ $( document ).ready(function() {
         var socket = new SockJS('/gs-guide-websocket');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
+            stompClient.subscribe('/topic/request', function (response) {
+                requestReceived( JSON.parse( response.body ) );
+            });
         });
+    },
+
+    requestReceived = function( request ) {
+        if( !request.participantId == $("#participantId").val() ) {
+            return;
+        }
+        $( "#" + request.typeOfRequest ).toggleClass( "active", request.active );
     },
 
     sendRequest = function(participantId, participantName, typeOfRequest, active) {

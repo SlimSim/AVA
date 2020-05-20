@@ -24,11 +24,11 @@
         <input type="hidden" id="participantId" th:value="${participant.id}" value="" />
         <p>Hej, <span id="participantName" th:text="${participant.name}" />!</p>
 
-        <button type="button" data-toggle="button" th:attr="aria-pressed=${participant.breakingQuestion}" data-time-changed="0" class="btn request-button btn-block btn-outline-danger" id="breakingQuestion">Ordningsfråga</button>
-        <button type="button" data-toggle="button" th:attr="aria-pressed=${participant.information}" data-time-changed="0" class="btn request-button btn-block btn-outline-warning" id="information">Sakupplysning</button>
-        <button type="button" data-toggle="button" th:attr="aria-pressed=${participant.comment}" data-time-changed="0" class="btn request-button btn-block btn-outline-info" id="comment">Kommentar</button>
-        <button type="button" data-toggle="button" th:attr="aria-pressed=${participant.requestToSpeak}" data-time-changed="0" class="btn request-button btn-block btn-outline-dark" id="requestToSpeak">Begär ordet</button>
-        <button type="button" data-toggle="button" th:attr="aria-pressed=${participant.handRaised}" data-time-changed="0" class="btn request-button btn-block btn-outline-success" id="handRaised">Rösta JA</button>
+        <button type="button" th:classappend="${participant.breakingQuestion} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-danger" id="breakingQuestion">Ordningsfråga</button>
+        <button type="button" th:classappend="${participant.information} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-warning" id="information">Sakupplysning</button>
+        <button type="button" th:classappend="${participant.comment} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-info" id="comment">Kommentar</button>
+        <button type="button" th:classappend="${participant.requestToSpeak} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-dark" id="requestToSpeak">Begär ordet</button>
+        <button type="button" th:classappend="${participant.handRaised} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-success" id="handRaised">Rösta JA</button>
 
     </form>
 
