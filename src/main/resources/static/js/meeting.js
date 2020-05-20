@@ -45,17 +45,22 @@ $( document ).ready(function() {
             .done( repopulateParticipantList );
     },
 
-        /*
-    killButton = function( text, value ) {
+    killRequest = function( event ) {
+        const individual = $( event.target ).closest( "[participant-id]" );
+        const participantId = individual.attr("participant-id");
+        const typeOfRequest = individual.attr("type-of-request");
 
-        if( !value ) {
-            return null;
-        }
-        $( "<button>" )
-            .addClass( "btn").addClass
-
-
-    },*/
+        stompClient.send(
+            "/app/request",
+            {},
+            JSON.stringify( {
+                "participantId": participantId,
+                "typeOfRequest" : typeOfRequest,
+                "participantName" : "null",
+                "active" : false
+            } )
+        );
+    },
 
     addParticipant = function( participant ) {
 
@@ -120,11 +125,18 @@ $( document ).ready(function() {
 
     createSpeakerQueRow = function( participantId, participantName, typeOfRequest ) {
 
-        const individual = $( "<div>" ).attr("participant-id", participantId).addClass( "pb-1" );
-        const card = $( "<div>" ).addClass().addClass( "card" );
-        const cardBody = $( "<div>" ).addClass( "row" ).addClass( "card-body" ).addClass( "p-1 m-0" );
+        const individual = $( "<div>" )
+            .attr("participant-id", participantId)
+            .attr("type-of-request", typeOfRequest)
+            .addClass( "pb-1" );
+        const card = $( "<div>" ).addClass( "card" );
+        const cardBody = $( "<div>" ).addClass( "row card-body p-1 m-0" );
         const nameArea = $( "<div>" ).addClass( "col" );
+        const removeArea = $( "<div>" ).addClass( "col" );
         const name = $( "<p>" ).addClass("m-0").text( participantName );
+        const removeButton = $( "<button>" ).addClass("btn p-0 float-right").append(
+            $( "<i>" ).addClass( "fa fa-remove" )
+        ).on( "click", killRequest );
 
         let currentQue = "";
 
@@ -132,26 +144,31 @@ $( document ).ready(function() {
 
         if( typeOfRequest == "breakingQuestion" )  {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
+            card.addClass( "bg-danger" );
             currentQue = "#speakerQueBreakingQuestion";
             incrementHtmlCounter( "#breakingQuestionCounter" );
         }
         if( typeOfRequest == "information" )       {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );
+            card.addClass( "bg-warning" );
             currentQue = "#speakerQueInformation";
             incrementHtmlCounter( "#informationCounter" );
         }
         if( typeOfRequest == "comment" )           {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
+            card.addClass( "bg-info" );
             currentQue = "#speakerQueComment";
             incrementHtmlCounter( "#commentCounter" );
         }
         if( typeOfRequest == "requestToSpeak" )    {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );
+            card.addClass( "bg-white" );
             currentQue = "#speakerQueRequestToSpeak";
             incrementHtmlCounter( "#requestToSpeakCounter" );
         }
         if( typeOfRequest == "handRaised" )        {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
+            card.addClass( "bg-success" );
             currentQue = "#speakerQueHandRaised";
             incrementHtmlCounter( "#handRaisedCounter" );
         }
@@ -164,8 +181,9 @@ $( document ).ready(function() {
         */
 
         nameArea.append( name );
+        removeArea.append( removeButton );
         card.append( cardBody );
-        cardBody.append(nameArea).append(statusArea);
+        cardBody.append(nameArea).append(statusArea).append( removeArea );
         individual.append(card);
         $( currentQue ).append( individual );
     },
