@@ -10,16 +10,17 @@
     <link href="/webjars/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/css/main.css" rel="stylesheet">
 </head>
-<body>
+<body class="p-1">
     <h1>A Voting App</h1>
 
-    <form action="#" th:action="@{/meeting}" method="post">
-        <input type="text" id="name" name="name" />
-        <input id="submit" class="btn btn-bd-primary" type="submit" value="Skapa nytt möte" />
+    <form action="#" th:action="@{/meeting}" method="post" class="form-inline">
+        <div class="form-group">
+            <input type="text" id="name" name="name" class="form-control" />
+            <input id="submit" class="btn btn-primary form-control" type="submit" value="Skapa nytt möte" />
+        </div>
     </form>
-    <script>
-        $("#submit").addClass( "btn-success" );
-    </script>
 </body>
 </html>

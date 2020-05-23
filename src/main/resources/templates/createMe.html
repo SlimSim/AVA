@@ -13,15 +13,15 @@
     <link href="/css/main.css" rel="stylesheet">
 
 </head>
-<body>
+<body class="p-1">
     <h1>A Voting App</h1>
 
 
-    <h2>Join <span th:text="${meetingName}" /></h2>
-    <form action="#" th:action="@{/meeting/__${meetingId}__/participant}" th:object="${participant}" method="post">
+    <h2 class="text-break">Delta i <span th:text="${meetingName}" /></h2>
+    <form action="#" th:action="@{/meeting/__${meetingId}__/participant}" class="form-inline" th:object="${participant}" method="post">
         <label for="name">Vad heter du?</label>
-        <input id="name" name="name" type="text" />
-        <button class="btn btn-primary" type="submit">OK</button>
+        <input id="name" name="name" type="text" class="form-control" />
+        <button class="btn btn-primary form-control" type="submit">OK</button>
     </form>
 
 </body>

@@ -15,8 +15,8 @@
     <link href="/css/main.css" rel="stylesheet">
     <script src="/js/participant.js"></script>
 </head>
-<p>
-    <h1 th:text="${meetingName}" />
+<body class="p-1">
+    <h1 class="text-break" th:text="${meetingName}" />
     <h3>A Voting App</h3>
 
     <form id="participantForm" action="#" th:action="@{/meeting/__${meetingId}__/participants/__${participantId}__}" th:object="${participant}" method="post">
