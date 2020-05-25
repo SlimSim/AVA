@@ -1,10 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>A Voting App</title>
+    <title>Talarlistan</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
 
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -17,7 +16,6 @@
 </head>
 <body class="p-1">
     <h1 class="text-break" th:text="${meetingName}" />
-    <h3>A Voting App</h3>
 
     <form id="participantForm" action="#" th:action="@{/meeting/__${meetingId}__/participants/__${participantId}__}" th:object="${participant}" method="post">
 
