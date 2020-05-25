@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Talarlistan</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/webjars/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="m-0 p-0 row">
+
+    <div class="col-sm-1 col-lg-2"></div>
+    <div class="col-sm-10 col-lg-8 d-flex flex-column h-100 p-1">
+        <div class="pb-3 text-center">
+            <i class="fa fa-users fa-1x"></i>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Välkommen till Talarlistan</h5>
+                <p class="card-text">
+                    Vill du hålla koll på talarlistan på ditt möte?
+                    Då har du kommit rätt!
+                    Talarlistan hjälper dig att hålla koll på vilka mötesdelatagare som har begärt ordet
+                    och listar dem dessutom i rätt ordning.
+                    Talarlistan erbjuder också en röstningsfunktion samt kommentar,
+                    sakupplysning och ordningsfråga,
+                    funktioner som är perfekta för större, mer formella möten.
+                </p>
+                <p class="card-text">
+                    Tryck på "Skapa möte" för att komma igång!
+                    Skriv sedan in namnet på ditt möte, följt av "OK" så är du inne i mötet.
+                </p>
+               <p class="card-text">
+                   När du skapat ett nytt möte genereras en länk som du kan skicka till mötesdeltagarna,
+                   de följer länken, fyller i sina namn och vips så är ni igång!
+                </p>
+            </div>
+        </div>
+
+
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Hur fungerar den?</h5>
+                <p class="card-text">
+                    Under "Deltagare" kommer alla deltagare listas,
+                    de dyker upp när de fyllt i sitt namn och gått med i mötet.
+                    När deltagarna begär ordet, har en ordningsfråga eller liknande,
+                    så kommer det stå under "Talarlista".
+                    Talarlistan är sorterad så att den som står överst är den som är på tur att prata.
+                </p>
+                <h6 class="card-title">Olika sätt att begära ordet?</h6>
+
+            </div>
+        </div>
+
+
+        <input data-toggle="modal" data-target="#createMeeting"
+               class="btn btn-primary form-control" type="button" value="Skapa möte" />
+
+
+    </div>
+    <div class="col-sm-1 col-lg-2"></div>
+    <!-- Trigger the modal with a button -->
+
+    <!-- Modal -->
+    <div id="createMeeting" class="modal fade text-left" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa Möte</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/meeting}" method="post" class="pb-3">
+                        <div class="form-group">
+                            <label for="name">Mötets namn:</label>
+                            <input type="text" id="name" name="name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input id="submit" class="btn btn-primary form-control" type="submit" value="OK" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+</html>
