@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-    <title>A Voting App</title>
+    <title>Talarlistan</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,14 +13,59 @@
 
     <link href="/css/main.css" rel="stylesheet">
 </head>
-<body class="p-1">
-    <h1>A Voting App</h1>
+<body class="window-height m-0 p-0 row">
+    <div class="col-sm-2 col-md-3 col-lg-4"></div>
+    <div class="col-sm-8 col-md-6 col-lg-4 text-center d-flex flex-column h-100 p-1">
+        <div class="flex-grow-1"></div>
 
-    <form action="#" th:action="@{/meeting}" method="post" class="form-inline">
-        <div class="form-group">
-            <input type="text" id="name" name="name" class="form-control" />
-            <input id="submit" class="btn btn-primary form-control" type="submit" value="Skapa nytt möte" />
+        <h1>Talarlistan</h1>
+
+        <div class="display-4 pb-3">
+            <i class="fa fa-users fa-2x"></i>
         </div>
-    </form>
+
+
+        <input data-toggle="modal" data-target="#createMeeting"
+               class="btn btn-primary form-control" type="button" value="Skapa möte" />
+
+        <div class="flex-grow-1"></div>
+        <div class="flex-grow-1"></div>
+        <div class="flex-grow-1"></div>
+
+        <a href="/instructions.html" class="btn btn-secondary">Instruktioner</a>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-4"></div>
+
+
+
+
+    <!-- Modals -->
+    <div id="createMeeting" class="modal fade text-left" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa Möte</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/meeting}" method="post" class="pb-3">
+                        <div class="form-group">
+                            <label for="name">Mötets namn:</label>
+                            <input type="text" id="name" name="name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input id="submit" class="btn btn-primary form-control" type="submit" value="OK" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
