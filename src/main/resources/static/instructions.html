@@ -28,7 +28,7 @@
                 <p class="card-text">
                     Vill du hålla koll på talarlistan på ditt möte?
                     Då har du kommit rätt!
-                    Talarlistan hjälper dig att hålla koll på vilka mötesdelatagare som har begärt ordet
+                    Talarlistan hjälper dig att hålla koll på vilka mötesdeltagare som har begärt ordet
                     och listar dem dessutom i rätt ordning.
                     Talarlistan erbjuder också en röstningsfunktion samt kommentar,
                     sakupplysning och ordningsfråga,
@@ -36,7 +36,7 @@
                 </p>
                 <p class="card-text">
                     Tryck på "Skapa möte" för att komma igång!
-                    Skriv sedan in namnet på ditt möte, följt av "OK" så är du inne i mötet.
+                    Skriv in namnet på ditt möte och klicka på "OK" så är du inne i mötet.
                 </p>
                <p class="card-text">
                    När du skapat ett nytt möte genereras en länk som du kan skicka till mötesdeltagarna,
@@ -49,20 +49,107 @@
 
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">Hur fungerar den?</h5>
+                <h5 class="card-title">Hur fungerar Talarlistan?</h5>
                 <p class="card-text">
                     Under "Deltagare" kommer alla deltagare listas,
                     de dyker upp när de fyllt i sitt namn och gått med i mötet.
-                    När deltagarna begär ordet, har en ordningsfråga eller liknande,
-                    så kommer det stå under "Talarlista".
+                    När deltagarna begär ordet, har en ordningsfråga eller liknande tycker de på
+                    respektive knapp och listas då under mötesadministratörens "Talarlista".
                     Talarlistan är sorterad så att den som står överst är den som är på tur att prata.
                 </p>
-                <h6 class="card-title">Olika sätt att begära ordet?</h6>
+                <b class="card-title">Olika sätt att begära ordet?</b>
+                <p class="card-text">
+                    Det finns ett antal olika sätt att begära ordet, och dessa väger olika tungt i talarlistan:
+                    <br /><a href="#handRaised">Rösta JA</a>
+                    <br /><a href="#requestToSpeak">Begär ordet</a>
+                    <br /><a href="#comment">Kommentar</a>
+                    <br /><a href="#information">Sakupplysning</a>
+                    <br /><a href="#breakingQuestion">Ordningsfråga</a>
+                    <br />i stigande tyngd.
+                </p>
+                <p class="card-text">
+                    Detta betyder att ordningsfrågorna kommer hamna överst i talarlistan,
+                    följt av sakupplysningarna osv.
+                </p>
+                <b class="card-title">Stryka talare</b>
+                <p class="card-text">
+                    Som mötesadministratör kan du stryka talare när de får ordet eller talat klart
+                    genom att trycka på "x"-et till höger.
+                    På så sätt är talarlistan alltid aktuell.
+                </p>
+                <p class="card-text">
+                    En deltagare som begärt ordet kan själv ta tillbaka sin begäran genom att trycka på knappen igen.
+                    Då kommer begäran att tas bort från talarlistan automatiskt.
+                </p>
 
             </div>
         </div>
 
+        <div class="card mb-3" id="handRaised">
+            <div class="card-body">
+                <h5 class="card-title">Rösta JA</h5>
+                <p class="card-text">
+                    Detta är inte ett sätt att begära ordet,
+                    utan ett sätt att votera på. <br />
+                    När mötesordföranden frågar "Kan vi göra X"
+                    så trycker de deltagare som stöder förslaget "X" på "Rösta JA".
+                    När mötesordföranden sen frågar "Någon däremot"
+                    så trycker de deltagare som är emot förslaget "X" på "Rösta JA".
+                </p>
+            </div>
+        </div>
 
+        <div class="card mb-3" id="requestToSpeak">
+            <div class="card-body">
+                <h5 class="card-title">Begär ordet</h5>
+                <p class="card-text">
+                    Att begära ordet innebär att deltagaren vill yttra sig
+                    rörande den punkt som behandlas på dagordningen.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3" id="comment">
+            <div class="card-body">
+                <h5 class="card-title">Kommentar</h5>
+                <p class="card-text">
+                    Kommentar är ett kortare inlägg som en deltagare kan göra efter att någon begärt ordet.
+                    Kommentaren, till skillnad från att begära ordet,
+                    ska vara kortare och handla om samma sak som det den som begärde ordet tog upp.
+                </p>
+                <p class="card-text">
+                    Det är upp till mötesadministratören att avgöra om kommentarer ska få användas,
+                    eller om alla inlägg ska vara av typen "begär ordet".
+                    <br />En kommentar bryter eventuell talarlista i sakfrågan,
+                    och kan i sin tur få en egen talarlista om flera har kommentarer.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3" id="information">
+            <div class="card-body">
+                <h5 class="card-title">Sakupplysning</h5>
+                <p class="card-text">
+                    Sakupplysning är en ordningsfråga som man använder sig av om man vill tillföra ett en upplysning till ett möte.
+                    Upplysningen skall inte spegla talarens ståndpunkt utan endast tillföra fakta.
+                    <br />En mötesdeltagare kan även begära sakupplysning som innebär att han eller hon vill ha en sakupplysning.
+                    Begäran om sakupplysning kallas ibland även sakfråga.
+                    <br />En Sakupplysning bryter eventuell talarlista i sakfrågan,
+                    och kan i sin tur få en egen talarlista om flera har sakupplysningar.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3" id="breakingQuestion">
+            <div class="card-body">
+                <h5 class="card-title">Ordningsfråga</h5>
+                <p class="card-text">
+                    En ordningsfråga är en fråga på ett möte,
+                    som gäller själva formerna för mötet och hur det skall hållas.
+                    En ordningsfråga får normalt väckas när som helst på mötet,
+                    oavsett hur dagordningen ser ut, och diskuteras före sakfrågan.
+                    <br />En ordningsfråga bryter eventuell talarlista i sakfrågan,
+                    och kan i sin tur få en egen talarlista om flera vill yttra sig i ordningsfrågan.
+                </p>
+            </div>
+        </div>
         <input data-toggle="modal" data-target="#createMeeting"
                class="btn btn-primary form-control" type="button" value="Skapa möte" />
 
@@ -70,6 +157,21 @@
     </div>
     <div class="col-sm-1 col-lg-2"></div>
     <!-- Trigger the modal with a button -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Modal -->
     <div id="createMeeting" class="modal fade text-left" role="dialog">
@@ -96,7 +198,6 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
                 </div>
             </div>
-
         </div>
     </div>
 
