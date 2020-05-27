@@ -20,8 +20,16 @@ public class Participant {
     private long commentTime;
     private boolean requestToSpeak;
     private long requestToSpeakTime;
-    private boolean handRaised;
-    private long handRaisedTime;
+    private boolean voteYes;
+    private long voteYesTime;
+    private boolean voteNo;
+    private long voteNoTime;
+    private boolean showBreakingQuestion;
+    private boolean showInformation;
+    private boolean showComment;
+    private boolean showRequestToSpeak;
+    private boolean showVoteYes;
+    private boolean showVoteNo;
 
 
 //    @ManyToOne
@@ -43,7 +51,8 @@ public class Participant {
     public Participant(
             int id,
             String name,
-            boolean handRaised,
+            boolean voteYes,
+            boolean voteNo,
             boolean breakingQuestion,
             boolean requestToSpeak,
             int meetingId
@@ -51,7 +60,8 @@ public class Participant {
         super();
         this.id = id;
         this.name = name;
-        this.handRaised = handRaised;
+        this.voteYes = voteYes;
+        this.voteNo = voteNo;
         this.breakingQuestion = breakingQuestion;
         this.requestToSpeak = requestToSpeak;
         this.meeting = new Meeting( meetingId );
@@ -61,8 +71,14 @@ public class Participant {
         return "id " + id
                 + ", name " + name
                 + (meeting==null ? ", null" : ", meeting " + meeting.getId()  + " " + meeting.getName() )
-                + ", breakingQuestion " + breakingQuestion
-                + ", breakingQuestionTime " + breakingQuestionTime
+                //+ ", breakingQuestion " + breakingQuestion
+                //+ ", breakingQuestionTime " + breakingQuestionTime
+                + ", showBreakingQuestion " + showBreakingQuestion
+                //+ ", showInformation " + showInformation
+                //+ ", showComment " + showComment
+                //+ ", showRequestToSpeak " + showRequestToSpeak
+                //+ ", showVoteYes " + showVoteYes
+                + ", showVoteNo " + showVoteNo
                 ;
     }
 
@@ -82,12 +98,12 @@ public class Participant {
         this.name = name;
     }
 
-    public boolean isHandRaised() {
-        return handRaised;
+    public boolean isVoteYes() {
+        return voteYes;
     }
 
-    public void setHandRaised(boolean handRaised) {
-        this.handRaised = handRaised;
+    public void setVoteYes(boolean voteYes) {
+        this.voteYes = voteYes;
     }
 
     public boolean isBreakingQuestion() {
@@ -163,11 +179,75 @@ public class Participant {
         this.requestToSpeakTime = requestToSpeakTime;
     }
 
-    public long getHandRaisedTime() {
-        return handRaisedTime;
+    public long getVoteYesTime() {
+        return voteYesTime;
     }
 
-    public void setHandRaisedTime(long handRaisedTime) {
-        this.handRaisedTime = handRaisedTime;
+    public void setVoteYesTime(long voteYesTime) {
+        this.voteYesTime = voteYesTime;
+    }
+
+    public boolean isVoteNo() {
+        return voteNo;
+    }
+
+    public void setVoteNo(boolean voteNo) {
+        this.voteNo = voteNo;
+    }
+
+    public long getVoteNoTime() {
+        return voteNoTime;
+    }
+
+    public void setVoteNoTime(long voteNoTime) {
+        this.voteNoTime = voteNoTime;
+    }
+
+    public boolean isShowBreakingQuestion() {
+        return showBreakingQuestion;
+    }
+
+    public void setShowBreakingQuestion(boolean showBreakingQuestion) {
+        this.showBreakingQuestion = showBreakingQuestion;
+    }
+
+    public boolean isShowInformation() {
+        return showInformation;
+    }
+
+    public void setShowInformation(boolean showInformation) {
+        this.showInformation = showInformation;
+    }
+
+    public boolean isShowComment() {
+        return showComment;
+    }
+
+    public void setShowComment(boolean showComment) {
+        this.showComment = showComment;
+    }
+
+    public boolean isShowRequestToSpeak() {
+        return showRequestToSpeak;
+    }
+
+    public void setShowRequestToSpeak(boolean showRequestToSpeak) {
+        this.showRequestToSpeak = showRequestToSpeak;
+    }
+
+    public boolean isShowVoteYes() {
+        return showVoteYes;
+    }
+
+    public void setShowVoteYes(boolean showVoteYes) {
+        this.showVoteYes = showVoteYes;
+    }
+
+    public boolean isShowVoteNo() {
+        return showVoteNo;
+    }
+
+    public void setShowVoteNo(boolean showVoteNo) {
+        this.showVoteNo = showVoteNo;
     }
 }

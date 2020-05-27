@@ -2,6 +2,7 @@ package com.slimsimapps.ava.participant;
 
 import com.slimsimapps.ava.MainController;
 import com.slimsimapps.ava.meeting.Meeting;
+import com.slimsimapps.ava.meeting.MeetingService;
 import com.slimsimapps.ava.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +24,8 @@ public class ParticipantService {
     @Autowired
     private SimpMessagingTemplate template;
 
+    @Autowired
+    MeetingService meetingService;
 
     Logger log = LoggerFactory.getLogger(MainController.class);
 
@@ -59,9 +61,12 @@ public class ParticipantService {
         } else if ( typeOfRequest == Request.TypeOfRequest.requestToSpeak ) {
             p.setRequestToSpeak( active );
             p.setRequestToSpeakTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.handRaised ) {
-            p.setHandRaised( active );
-            p.setHandRaisedTime( new Date().getTime() );
+        } else if ( typeOfRequest == Request.TypeOfRequest.voteYes) {
+            p.setVoteYes( active );
+            p.setVoteYesTime( new Date().getTime() );
+        } else if ( typeOfRequest == Request.TypeOfRequest.voteNo) {
+            p.setVoteNo( active );
+            p.setVoteNoTime( new Date().getTime() );
         }
 
         template.convertAndSend("/topic/request", request);
@@ -90,7 +95,19 @@ public class ParticipantService {
         }
         participant.setId( id );
 
+        Meeting meeting = meetingService.getMeeting( meetingId );
+        participant.setShowBreakingQuestion( meeting.isShowBreakingQuestion() );
+        participant.setShowInformation( meeting.isShowInformation() );
+        participant.setShowComment( meeting.isShowComment() );
+        participant.setShowRequestToSpeak( meeting.isShowRequestToSpeak() );
+        participant.setShowVoteYes( meeting.isShowVoteYes() );
+        participant.setShowVoteNo( meeting.isShowVoteNo() );
+
+
         participant.setMeeting(new Meeting( meetingId ) );
+
+        log.info( "addParticipant: participant = " + participant);
+
         participants.add( participant );
 
         template.convertAndSend("/topic/newParticipant", participant);
@@ -108,6 +125,15 @@ public class ParticipantService {
         return participantRepository.save( updatedParticipantData );
         */
         updatedParticipantData.setMeeting( new Meeting( meetingId ) );
+
+        Meeting meeting = meetingService.getMeeting( meetingId );
+        updatedParticipantData.setShowBreakingQuestion( meeting.isShowBreakingQuestion() );
+        updatedParticipantData.setShowInformation( meeting.isShowInformation() );
+        updatedParticipantData.setShowComment( meeting.isShowComment() );
+        updatedParticipantData.setShowRequestToSpeak( meeting.isShowRequestToSpeak() );
+        updatedParticipantData.setShowVoteYes( meeting.isShowVoteYes() );
+        updatedParticipantData.setShowVoteNo( meeting.isShowVoteNo() );
+
         int participantIndex = -1;
         for( int i = 0; i < participants.size(); i++ ) {
             if( participants.get( i ).getId() != participantId ){

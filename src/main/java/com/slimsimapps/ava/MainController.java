@@ -40,6 +40,8 @@ public class MainController {
         Meeting m2 = meetingService.addMeeting(m);
         String url = "/meeting/" + m2.getId();
 
+        log.info("newMeeting: m = " + m);
+
         log.info("newMeeting: url = " + url);
         return new ModelAndView( "redirect:" + url);
     }
@@ -83,6 +85,7 @@ public class MainController {
         Participant p2 = participantService.getParticipant(participantId);
         model.addAttribute("participant", p2 );
 
+        log.info( "meetingParticipant: p2 = " + p2);
 
         Meeting m = meetingService.getMeeting(meetingId);
         model.addAttribute( "meetingName", m.getName() );

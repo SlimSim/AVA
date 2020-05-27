@@ -106,9 +106,13 @@ $( document ).ready(function() {
             currentQue = "#speakerQueRequestToSpeak";
             decrementHtmlCounter( "#requestToSpeakCounter" );
         }
-        if( typeOfRequest == "handRaised" )        {
-            currentQue = "#speakerQueHandRaised";
-            decrementHtmlCounter( "#handRaisedCounter" );
+        if( typeOfRequest == "voteYes" )        {
+            currentQue = "#speakerQueVoteYes";
+            decrementHtmlCounter( "#voteYesCounter" );
+        }
+        if( typeOfRequest == "voteNo" )        {
+            currentQue = "#speakerQueVoteNo";
+            decrementHtmlCounter( "#voteNoCounter" );
         }
         const row = $(currentQue).find( "[participant-id=" + participantId + "]" );
 
@@ -144,7 +148,7 @@ $( document ).ready(function() {
 
         if( typeOfRequest == "breakingQuestion" )  {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
-            card.addClass( "bg-danger" );
+            card.addClass( "bg-danger text-white" );
             currentQue = "#speakerQueBreakingQuestion";
             incrementHtmlCounter( "#breakingQuestionCounter" );
         }
@@ -156,7 +160,7 @@ $( document ).ready(function() {
         }
         if( typeOfRequest == "comment" )           {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
-            card.addClass( "bg-info" );
+            card.addClass( "bg-info text-white" );
             currentQue = "#speakerQueComment";
             incrementHtmlCounter( "#commentCounter" );
         }
@@ -166,11 +170,17 @@ $( document ).ready(function() {
             currentQue = "#speakerQueRequestToSpeak";
             incrementHtmlCounter( "#requestToSpeakCounter" );
         }
-        if( typeOfRequest == "handRaised" )        {
+        if( typeOfRequest == "voteYes" )        {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
-            card.addClass( "bg-success" );
-            currentQue = "#speakerQueHandRaised";
-            incrementHtmlCounter( "#handRaisedCounter" );
+            card.addClass( "bg-yes" );
+            currentQue = "#speakerQueVoteYes";
+            incrementHtmlCounter( "#voteYesCounter" );
+        }
+        if( typeOfRequest == "voteNo" )        {
+            statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta NEJ" ) );
+            card.addClass( "bg-no" );
+            currentQue = "#speakerQueVoteNo";
+            incrementHtmlCounter( "#voteNoCounter" );
         }
 
         /*
@@ -190,12 +200,6 @@ $( document ).ready(function() {
 
     repopulateSpeakerQue = function( speakerRequests ) {
         $( "#speakerQue" ).children().remove();
-        let breakingQuestionCounter = 0;
-        let informationCounter = 0;
-        let commentCounter = 0;
-        let requestToSpeakCounter = 0;
-        let handRaisedCounter = 0;
-        let first = true;
 
         $.each( speakerRequests, (index, participant) => {
 
@@ -209,33 +213,12 @@ $( document ).ready(function() {
                 createSpeakerQueRow( participant.id, participant.name, "comment" );
             } else if( participant.requestToSpeak )    {
                 createSpeakerQueRow( participant.id, participant.name, "requestToSpeak" );
-            } else if( participant.handRaised )        {
-                createSpeakerQueRow( participant.id, participant.name, "handRaised" );
+            } else if( participant.voteYes )        {
+                createSpeakerQueRow( participant.id, participant.name, "voteYes" );
+            } else if( participant.voteNo )        {
+                createSpeakerQueRow( participant.id, participant.name, "voteNo" );
             }
 
-/*
-            const individual = $( "<div>" ).addClass().addClass( "pb-1" );
-            const card = $( "<div>" ).addClass().addClass( "card" );
-            const cardBody = $( "<div>" ).addClass( "row" ).addClass( "card-body" ).addClass( "p-1 m-0" );
-            const nameArea = $( "<div>" ).addClass( "col" );
-            const name = $( "<p>" ).addClass("m-0").text( participant.name );
-
-            let currentQue = "";
-
-            const statusArea = $( "<div>" ).addClass( "col" );
-
-
-            if( first ) {
-                statusArea.children().eq(0).addClass( "font-weight-bold" );
-                first = false;
-            }
-
-            nameArea.append( name );
-            card.append( cardBody );
-            cardBody.append(nameArea).append(statusArea);
-            individual.append(card);
-            $( currentQue ).append( individual );
-            */
         });
 
     },

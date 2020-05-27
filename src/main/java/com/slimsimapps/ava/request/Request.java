@@ -28,7 +28,8 @@ public class Request {
         information,
         comment,
         requestToSpeak,
-        handRaised;
+        voteYes,
+        voteNo;
     }
 
     public Request() {}
