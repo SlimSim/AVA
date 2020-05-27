@@ -49,13 +49,10 @@ public class MainController {
     @GetMapping("meeting/{id}")
     public ModelAndView myMeeting(@PathVariable int id, ModelMap model, HttpServletRequest request ) throws Exception {
         log.info("myMeeting ->");
-        // TODO: fixa pushning av data när det uppdaterats m.a.p websockets, kolla:
-        //          https://spring.io/guides/gs/messaging-stomp-websocket/
         Meeting m2 = meetingService.getMeeting( id );
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         model.addAttribute("participants", participantService.getAllParticipants( id ));
-        model.addAttribute( "meetingId", m2.getId() );
-        model.addAttribute( "meetingName", m2.getName() );
+        model.addAttribute( "meeting", m2 );
         model.addAttribute("joinUrl", baseUrl + "/meeting/" + id + "/join");
         return new ModelAndView( "meeting", model );
     }
