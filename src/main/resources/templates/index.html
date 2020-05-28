@@ -4,6 +4,8 @@
     <title>Talarlistan</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/logos/favicon.ico">
 
 
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,8 +22,8 @@
 
         <h1>Talarlistan</h1>
 
-        <div class="display-4 pb-3">
-            <i class="fa fa-users fa-2x"></i>
+        <div class="pb-3">
+            <img src="logos/logo.svg" alt="logo" class="w-100" width="512" height="200">
         </div>
 
 
@@ -53,7 +55,7 @@
                     <form action="#" th:action="@{/meeting}" method="post" class="pb-3">
                         <div class="form-group">
                             <label for="name">Mötets namn:</label>
-                            <input type="text" id="name" name="name" class="form-control" />
+                            <input autofocus type="text" id="name" name="name" class="form-control" />
                         </div>
 
                         <small class="form-text">Välj vad mötesdeltagarna ska kunna begära under mötet:</small>

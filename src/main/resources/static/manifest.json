@@ -1,0 +1,50 @@
+{
+  "name": "Talarlistan",
+  "short_name": "Talarlistan",
+  "description": "Talarlistan hjälper dig att hålla koll på vilka mötesdeltagare som har begärt ordet och listar dem dessutom i rätt ordning.",
+  "version": "0.1.0",
+  "offline_enabled": false,
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#efefef",
+  "theme_color": "#212529",
+  "icons": [
+    {
+      "src": "assets/logos/logo-016.png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "assets/logos/logo-036.png",
+      "sizes": "36x36"
+    },
+    {
+      "src": "assets/logos/logo-048.png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "assets/logos/logo-078.png",
+      "sizes": "78x78"
+    },
+    {
+      "src": "assets/logos/logo-096.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "assets/logos/logo-128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "logos/logo-192-non-transparent.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/logos/logo-256.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "logos/logo-512.png",
+      "sizes": "512x512"
+    }
+  ]
+}
