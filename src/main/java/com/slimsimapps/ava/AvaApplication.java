@@ -1,18 +1,27 @@
 package com.slimsimapps.ava;
 
+import com.slimsimapps.ava.badlog.BadLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class AvaApplication {
+public class AvaApplication extends SpringBootServletInitializer {
 
-	//private static final Logger log = LoggerFactory.getLogger(AvaApplication.class);
+
+	@Autowired
+	BadLogService log;
+
+
+	// Makes deployment to war possible:
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		log.a( application );
+		log.o();
+		return application.sources(AvaApplication.class);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(AvaApplication.class, args);
@@ -30,30 +39,30 @@ public class AvaApplication {
 			repository.save(new Customer("Michelle", "Dessler"));
 
 			// fetch all customers
-			log.info("Customers found with findAll():");
-			log.info("-------------------------------");
+			log.i("Customers found with findAll():");
+			log.i("-------------------------------");
 			for (Customer customer : repository.findAll()) {
-				log.info(customer.toString());
+				log.i(customer.toString());
 			}
-			log.info("");
+			log.i("");
 
 			// fetch an individual customer by ID
 			Customer customer = repository.findById(1L);
-			log.info("Customer found with findById(1L):");
-			log.info("--------------------------------");
-			log.info(customer.toString());
-			log.info("");
+			log.i("Customer found with findById(1L):");
+			log.i("--------------------------------");
+			log.i(customer.toString());
+			log.i("");
 
 			// fetch customers by last name
-			log.info("Customer found with findByLastName('Bauer'):");
-			log.info("--------------------------------------------");
+			log.i("Customer found with findByLastName('Bauer'):");
+			log.i("--------------------------------------------");
 			repository.findByLastName("Bauer").forEach(bauer -> {
-				log.info(bauer.toString());
+				log.i(bauer.toString());
 			});
 			// for (Customer bauer : repository.findByLastName("Bauer")) {
-			//  log.info(bauer.toString());
+			//  log.i(bauer.toString());
 			// }
-			log.info("");
+			log.i("");
 		};
 	}
 	 */

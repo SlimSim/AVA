@@ -1,9 +1,7 @@
 package com.slimsimapps.ava.participant;
 
 
-import com.slimsimapps.ava.MainController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.slimsimapps.ava.badlog.BadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +14,18 @@ import java.util.List;
 public class ParticipantController {
 
 
-    Logger log = LoggerFactory.getLogger(MainController.class);
+    @Autowired
+    BadLogService log;
 
     @Autowired
     ParticipantService participantService;
 
+    @Autowired
+    private SimpMessagingTemplate template;
+
     @GetMapping("/meeting/{meetingId}/speakerQue")
     public List<Participant> getSpeakerQue( @PathVariable int meetingId){
+        log.a( meetingId );
         List<Participant> x = participantService.getAllParticipants( meetingId );
 
         List<Participant> VoteYesParticipantList = new ArrayList<>();
@@ -88,11 +91,13 @@ public class ParticipantController {
         sortedParticipantList.addAll(VoteYesParticipantList);
         sortedParticipantList.addAll(VoteNoParticipantList);
 
+        log.o( sortedParticipantList );
         return sortedParticipantList;
     }
 
     @GetMapping("/meeting/{meetingId}/participants")
     public List<Participant> getAllParticipants( @PathVariable int meetingId){
+        log.a( meetingId );
         List<Participant> x = participantService.getAllParticipants( meetingId );
 
         List<Participant> VoteYesParticipantList = new ArrayList<>();
@@ -133,11 +138,14 @@ public class ParticipantController {
         sortedParticipantList.addAll(VoteNoParticipantList);
         sortedParticipantList.addAll(silentParticipantList);
 
+        log.o( sortedParticipantList );
         return sortedParticipantList;
     }
 
     @GetMapping("/meeting/{meetingId}/participants/{id}")
     public Participant getParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
+        log.a( meetingId, id);
+        log.o();
         return participantService.getParticipant( id ); //TODO: lägg till meetingId här, för en extra koll :)
     }
 
@@ -163,38 +171,38 @@ public class ParticipantController {
     */
 
 
-    @Autowired
-    private SimpMessagingTemplate template;
 
     @PostMapping("/meeting/{meetingId}/participants")
     public Participant addParticipant( @PathVariable int meetingId, @RequestBody Participant participant ) throws Exception {
-        System.out.println("addParticipant ->");
+        log.a( meetingId, participant );
 
         Participant p = participantService.addParticipant(participant, meetingId);
-        System.out.println("addParticipant: p = " + p);
+        log.d("addParticipant: p = " + p);
         this.template.convertAndSend("/topic/newParticipant", p);
 
+        log.o(p);
         return p;
     }
 
-
-
-
-
-
     @PutMapping( "/meeting/{meetingId}/participants/{id}" )
     public Participant updateParticipant( @PathVariable int meetingId, @PathVariable int id, @RequestBody Participant participant ) throws Exception {
+        log.a( meetingId, id, participant);
         //participant.setMeeting( new Meeting( meetingId ) );
+        log.o();
         return participantService.updateParticipant( id, meetingId, participant );
     }
 
     @PostMapping( "/meeting/{meetingId}/participants/{id}" )
     public Participant setParticipant( @PathVariable int meetingId, @PathVariable int id, @RequestBody Participant participant ) throws Exception {
+        log.a( meetingId, id, participant);
+        log.o();
         return participantService.updateParticipant( id, meetingId, participant );
     }
 
     @DeleteMapping( "/meeting/{meetingId}/participants/{id}" )
     public void deleteParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
+        log.a( meetingId, id);
+        log.o();
         participantService.deleteParticipant( id ); //TODO: lägg till meetingId här, för en extra koll :)
     }
 

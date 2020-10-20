@@ -1,9 +1,7 @@
 package com.slimsimapps.ava.meeting;
 
 
-import com.slimsimapps.ava.MainController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.slimsimapps.ava.badlog.BadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +11,8 @@ import java.util.List;
 public class MeetingController {
 
 
-    Logger log = LoggerFactory.getLogger(MainController.class);
+    @Autowired
+    BadLogService log;
 
     @Autowired
     MeetingService meetingService;

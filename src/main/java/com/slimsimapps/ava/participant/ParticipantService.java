@@ -1,11 +1,9 @@
 package com.slimsimapps.ava.participant;
 
-import com.slimsimapps.ava.MainController;
+import com.slimsimapps.ava.badlog.BadLogService;
 import com.slimsimapps.ava.meeting.Meeting;
 import com.slimsimapps.ava.meeting.MeetingService;
 import com.slimsimapps.ava.request.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -27,22 +25,26 @@ public class ParticipantService {
     @Autowired
     MeetingService meetingService;
 
-    Logger log = LoggerFactory.getLogger(MainController.class);
+    @Autowired
+    BadLogService log;
 
     List<Participant> participants = new ArrayList<>();
 
 
     public List<Participant> getAllParticipants( int meetingId ) {
+        log.a(meetingId);
         /*
         List<Participant> participants = new ArrayList<>();
         Iterable<Participant> meetingIterable = participantRepository.findByMeetingId( meetingId );
         meetingIterable.forEach(participants::add);
         return participantRepository.findByMeetingId( meetingId );
         */
+        log.o();
         return participants.stream().filter(p -> p.getMeeting().getId() == meetingId).collect(Collectors.toList());
     }
 
     public Participant setParticipantRequest( Request request ) throws Exception {
+        log.a(request);
         int participantId = request.getParticipantId();
         Request.TypeOfRequest typeOfRequest = request.getTypeOfRequest();
         boolean active = request.isActive();
@@ -71,16 +73,20 @@ public class ParticipantService {
 
         template.convertAndSend("/topic/request", request);
 
+        log.o();
         return updateParticipant( participantId, p.getMeeting().getId(), p );
     }
 
     public Participant getParticipant(int id) throws Exception {
+        log.a(id);
+        log.o();
         return participants.stream().filter( participant -> participant.getId() == id ).findFirst().get();
         //return participantRepository.findById(id).orElseThrow(
         //        () -> new Exception("No Participant found with id " + id) );
     }
 
     public Participant addParticipant(Participant participant, int meetingId) throws Exception {
+        log.a(participant, meetingId);
         if( participant == null ) {
             throw new Exception("No body found, participant is null");
         }
@@ -106,17 +112,19 @@ public class ParticipantService {
 
         participant.setMeeting(new Meeting( meetingId ) );
 
-        log.info( "addParticipant: participant = " + participant);
+        log.d( "participant = " + participant);
 
         participants.add( participant );
 
         template.convertAndSend("/topic/newParticipant", participant);
 
+        log.o(participant);
         return participant;
         //return participantRepository.save(participant);
     }
 
     public Participant updateParticipant(int participantId, int meetingId, Participant updatedParticipantData) throws Exception {
+        log.a(participantId, meetingId, updatedParticipantData);
         /*
         if( !participantRepository.existsById(participantId) ) {
             throw new Exception("No Participant found with id " + participantId);
@@ -144,10 +152,12 @@ public class ParticipantService {
         }
 
         participants.set( participantIndex, updatedParticipantData );
+        log.o(updatedParticipantData);
         return updatedParticipantData;
     }
 
     public void deleteParticipant(int id) throws Exception {
+        log.a(id);
         /*
         if( !participantRepository.existsById(id) ) {
             throw new Exception("No Participant found with id " + id);
@@ -156,5 +166,6 @@ public class ParticipantService {
         */
 
         participants.remove( id );
+        log.o();
     }
 }
