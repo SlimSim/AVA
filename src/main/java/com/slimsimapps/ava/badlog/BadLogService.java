@@ -71,12 +71,12 @@ public class BadLogService {
 
         switch (level) {
 
-            //case "dev":     javaLog.debug( fileName + " " + lineNumber + " " + text ); break;
+            case "dev":     javaLog.debug( fileName + " " + lineNumber + " " + text ); break;
             case "info":    javaLog.info( fileName + " " + lineNumber + " " + text ); break;
             case "warn":    javaLog.warn( fileName + " " + lineNumber + " " + text ); break;
             case "error":   javaLog.error( fileName + " " + lineNumber + " " + text ); break;
-            //case "trace":   javaLog.trace( fileName + " " + lineNumber + " " + text ); break
-            default:        javaLog.info( fileName + " " + lineNumber + " " + text ); break;
+            //case "trace":   javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
+            default:        javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
         }
 
 

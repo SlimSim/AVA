@@ -33,28 +33,6 @@ public class MainController {
     BadLogService log;
 
 
-
-    @GetMapping({ "/badLogs/home" })
-    public ModelAndView badLogs(ModelMap model ) {
-        return new ModelAndView( "badLog", model );
-    }
-
-    @GetMapping("/badLogs2/api/all")
-    public List<BadLog> getAllBadLogs(){
-        return log.getAllBadLogs();
-    }
-
-    @GetMapping("/badLogs2/api/latest")
-    public BadLog getLatestBadLogs(){
-        return log.getLatestBadLog();
-    }
-
-    @GetMapping("/badLogs2/api/clear")
-    public BadLog clearAllBadLogs(){
-        log.clearAllBadLogs();
-        return new BadLog("BadLogs cleared" );
-    }
-
     @GetMapping({ "/instructions", "/instructions.html" })
     public ModelAndView instructions( ModelMap model ) {
         log.a();

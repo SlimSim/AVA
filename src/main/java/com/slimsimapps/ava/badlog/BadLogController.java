@@ -2,7 +2,9 @@ package com.slimsimapps.ava.badlog;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -13,22 +15,22 @@ public class BadLogController {
     @Autowired
     BadLogService badLogService;
 
-    /*@GetMapping({ "/badLogs/home" })
-    public ModelAndView index(ModelMap model ) {
+    @GetMapping({ "/badLog" })
+    public ModelAndView badLog(ModelMap model ) {
         return new ModelAndView( "badLog", model );
-    }*/
+    }
 
-    @GetMapping("/badLogs/api/all")
+    @GetMapping("/badLog/api/all")
     public List<BadLog> getAllBadLogs(){
         return badLogService.getAllBadLogs();
     }
 
-    @GetMapping("/badLogs/api/latest")
+    @GetMapping("/badLog/api/latest")
     public BadLog getLatestBadLogs(){
         return badLogService.getLatestBadLog();
     }
 
-    @GetMapping("/badLogs/api/clear")
+    @GetMapping("/badLog/api/clear")
     public BadLog clearAllBadLogs(){
         badLogService.clearAllBadLogs();
         return new BadLog("BadLogs cleared" );
