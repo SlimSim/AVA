@@ -1,4 +1,4 @@
-package com.slimsimapps.ava;
+package com.slimsimapps.ava.badlog;
 
 /*
 import javax.persistence.Entity;
