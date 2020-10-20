@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Talarlistan</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="#" th:href="@{/manifest.json}" rel="manifest">
+    <link href="#" th:href="@{/logos/favicon.ico}" rel="icon">
+
+
+    <link href="#" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="#" th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <script src="#" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script src="#" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script-->
+
+    <!--p> contextPath: <span th:text="@{/}" /></p-->
+    <link href="#" th:href="@{/css/main.css}" rel="stylesheet" >
+    <!--link href="/css/main.css" rel="stylesheet" -->
+
+</head>
+<body class="window-height m-0 p-0 row">
+    <div class="col-sm-2 col-md-3 col-lg-4"></div>
+    <div class="col-sm-8 col-md-6 col-lg-4 text-center d-flex flex-column h-100 p-1">
+        <div class="flex-grow-1"></div>
+
+        <h1>Talarlistan</h1>
+
+        <p class="small text-break" th:text="${indexCounter}" />
+
+        <p class="small">Context Path: <span th:text="@{/}" /></p>
+
+        <div class="pb-3">
+            <img src="logos/logo.svg" alt="logo" class="w-100" width="512" height="200">
+        </div>
+
+
+        <input data-toggle="modal" data-target="#createMeeting"
+               class="btn btn-primary form-control" type="button" value="Skapa möte" />
+
+        <div class="flex-grow-1"></div>
+        <div class="flex-grow-1"></div>
+        <div class="flex-grow-1"></div>
+
+        <a href="/instructions.html" class="btn btn-secondary">Instruktioner</a>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-4"></div>
+
+
+
+
+    <!-- Modals -->
+    <div id="createMeeting" class="modal fade text-left" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa Möte</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    th:action fixar så att url'en i heliohost blir "/slimsim_ava-0.0.1-SNAPSHOT/meeting"
+                    medan den i local host blir "/meeting"
+                    jag skullle vilja att den blir "ava-0.0.1-SNAPSHOT/meeting"
+                    hum.......</p>
+                    <form action="#" th:action="@{/meeting}" method="post" class="pb-3">
+                        <div class="form-group">
+                            <label for="name">Mötets namn:</label>
+                            <input autofocus type="text" id="name" name="name" class="form-control" />
+                        </div>
+
+                        <small class="form-text">Välj vad mötesdeltagarna ska kunna begära under mötet:</small>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showBreakingQuestion" checked="checked" name="showBreakingQuestion">
+                            <label class="form-check-label" for="showBreakingQuestion">
+                                Ordningsfråga
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showInformation" name="showInformation">
+                            <label class="form-check-label" for="showInformation">
+                                Sakupplysning
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showComment" name="showComment">
+                            <label class="form-check-label" for="showComment">
+                                Kommentar
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showRequestToSpeak" checked="checked" name="showRequestToSpeak">
+                            <label class="form-check-label" for="showRequestToSpeak">
+                                Begär ordet
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showVoteYes" checked="checked" name="showVoteYes">
+                            <label class="form-check-label" for="showVoteYes">
+                                Rösta JA
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showVoteNo" checked="checked" name="showVoteNo">
+                            <label class="form-check-label" for="showVoteNo">
+                                Rösta NEJ
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="submit" class="btn btn-primary form-control" type="submit" value="OK" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

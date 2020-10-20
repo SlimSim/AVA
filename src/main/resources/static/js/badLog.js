@@ -2,8 +2,8 @@
 
 $( document ).ready(function() {
     const meetingId = $( "#meetingId" ).val(),
-        speakerQueUrl = "/meeting/" + meetingId + "/speakerQue",
-        participantsUrl = "/meeting/" + meetingId + "/participants";
+        speakerQueUrl = thymeLeaf.contextPath + "meeting/" + meetingId + "/speakerQue",
+        participantsUrl = thymeLeaf.contextPath + "meeting/" + meetingId + "/participants";
 
     var stompClient = null,
 
@@ -17,7 +17,7 @@ $( document ).ready(function() {
     },
 
     connect = function() {
-        var socket = new SockJS('/gs-guide-websocket');
+        var socket = new SockJS( thymeLeaf.contextPath + 'gs-guide-websocket');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             stompClient.subscribe('/topic/newParticipant', function (response) {
