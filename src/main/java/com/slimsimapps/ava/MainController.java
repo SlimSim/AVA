@@ -55,6 +55,13 @@ public class MainController {
         return new BadLog("BadLogs cleared" );
     }
 
+    @GetMapping({ "/instructions", "/instructions.html" })
+    public ModelAndView instructions( ModelMap model ) {
+        log.a();
+        log.o();
+        return new ModelAndView( "instructions", model );
+    }
+
     @GetMapping({ "/", "/index", "/index/" })
     public ModelAndView index( ModelMap model ) {
         log.a();
