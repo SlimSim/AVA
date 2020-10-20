@@ -11,15 +11,11 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class AvaApplication extends SpringBootServletInitializer {
 
 
-	@Autowired
-	BadLogService log;
 
 
 	// Makes deployment to war possible:
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		log.a( application );
-		log.o();
 		return application.sources(AvaApplication.class);
 	}
 
