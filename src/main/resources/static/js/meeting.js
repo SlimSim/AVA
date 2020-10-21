@@ -224,6 +224,15 @@ $( document ).ready(function() {
 
         $( "#participantCounter" ).text( participants.length );
 
+    },
+
+    setJoinUrl = function() {
+        const joinUrl = window.location.href + "/join";
+        $( "#joinUrl" ).attr( "href", joinUrl ).text( joinUrl );
+    };
+
+
+    setJoinUrl();
     };
 
     connect();
