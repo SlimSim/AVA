@@ -52,6 +52,7 @@ $( document ).ready(function() {
 
     $( "#clearServer" ).on( "click", clearServerLogs );
     $( "#clearClient" ).on( "click", clearClientLogs );
+    $( "#reloadData" ).on( "click", getBadLogList );
 
     $( ".hideData" ).on( "click", function( event ) {
         var $target = $( event.target ),
