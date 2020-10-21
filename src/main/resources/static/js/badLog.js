@@ -1,9 +1,9 @@
 
 $( document ).ready(function() {
-    const badLogAllUrl = thymeLeaf.contextPath + "badLogs/api/all";
-    const badLogClearUrl = thymeLeaf.contextPath + "badLogs/api/clear";
+    const badLogAllUrl = thymeLeaf.contextPath + "badLog/api/all";
+    const badLogClearUrl = thymeLeaf.contextPath + "badLog/api/clear";
 
-    var getBadLogs = function() {
+    var getBadLogList = function() {
         $.ajax({
             url: badLogAllUrl
         })
@@ -35,11 +35,11 @@ $( document ).ready(function() {
         $( "#badLogList" ).children().remove();
     },
 
-    repopulateBadLogList = function( badLogs ) {
+    repopulateBadLogList = function( badLogList ) {
 
         clearClientLogs();
 
-        $.each( badLogs, (index, badLog) => {
+        $.each( badLogList, (index, badLog) => {
 			var [date, time] = badLog.timeStamp.split("T");
 
             $( "#badLogList" ).append( createBadLogRow(
@@ -60,5 +60,5 @@ $( document ).ready(function() {
         $( "#badLogTable" ).toggleClass( dataToHide );
     });
 
-    getBadLogs();
+    getBadLogList();
 } );
