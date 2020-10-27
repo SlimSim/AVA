@@ -30,6 +30,7 @@
     <form id="participantForm" action="#" th:action="@{/meeting/__${meetingId}__/participants/__${participantId}__}" th:object="${participant}" method="post">
 
         <input type="hidden" id="participantId" th:value="${participant.id}" value="" />
+        <input type="hidden" id="meetingId" th:value="${meetingId}" value="" />
         <p>Hej, <span id="participantName" th:text="${participant.name}" />!</p>
 
         <button th:if="${participant.showBreakingQuestion}" type="button" th:classappend="${participant.breakingQuestion} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-danger" id="breakingQuestion">Ordningsfråga</button>

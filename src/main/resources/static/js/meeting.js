@@ -2,22 +2,36 @@
 
 $( document ).ready(function() {
     const meetingId = $( "#meetingId" ).val(),
+        socketUrl = thymeLeaf.contextPath + 'gs-guide-websocket',
+		requestUrl = thymeLeaf.contextPath + "ajax/request",
         speakerQueUrl = thymeLeaf.contextPath + "meeting/" + meetingId + "/speakerQue",
         participantsUrl = thymeLeaf.contextPath + "meeting/" + meetingId + "/participants";
 
     var stompClient = null,
 
 
-    getSpeakerQue = function() {
-
+    getSpeakerQue = function( callback ) {
         $.ajax({
             url: speakerQueUrl
         })
-        .done( repopulateSpeakerQue );
+        .done( ( speakerQue ) => {
+	        repopulateSpeakerQue( speakerQue );
+	        callback && callback();
+        } );
+    },
+
+    getParticipants = function( callback ) {
+        $.ajax({
+            url: participantsUrl
+        })
+        .done( ( participants ) => {
+            repopulateParticipantList( participants );
+	        callback && callback();
+        } );
     },
 
     connect = function() {
-        var socket = new SockJS('/gs-guide-websocket');
+        var socket = new SockJS( socketUrl );
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             stompClient.subscribe('/topic/newParticipant', function (response) {
@@ -26,31 +40,36 @@ $( document ).ready(function() {
             stompClient.subscribe('/topic/request', function (response) {
                 addRequest( JSON.parse( response.body ) );
             });
+        }, function( error ) {
+            console.log( "connect: error", error );
+	        continuouslyPullForSpeakerQue();
+            continuouslyPullForParticipants();
         });
-    },
-
-    getParticipants = function() {
-        $.ajax({
-            url: participantsUrl
-        })
-            .done( repopulateParticipantList );
     },
 
     killRequest = function( event ) {
         const individual = $( event.target ).closest( "[participant-id]" );
         const participantId = individual.attr("participant-id");
         const typeOfRequest = individual.attr("type-of-request");
+		const data = JSON.stringify( {
+			"participantId": participantId,
+			"typeOfRequest" : typeOfRequest,
+			"participantName" : "null",
+			"active" : false
+		} );
 
-        stompClient.send(
-            "/app/request",
-            {},
-            JSON.stringify( {
-                "participantId": participantId,
-                "typeOfRequest" : typeOfRequest,
-                "participantName" : "null",
-                "active" : false
-            } )
-        );
+        if( stompClient.connected ) {
+	        stompClient.send( "/app/request", {}, data );
+        } else {
+	        $.ajax({
+	            type : "POST",
+		        contentType: "application/json",
+	            url: requestUrl,
+				data : data
+	        })
+	        .done( repopulateSpeakerQue );
+        }
+
     },
 
     addParticipant = function( participant ) {
@@ -190,7 +209,8 @@ $( document ).ready(function() {
     },
 
     repopulateSpeakerQue = function( speakerRequests ) {
-        $( "#speakerQue" ).children().remove();
+        $( ".speakerQue" ).children().remove();
+        $( ".counter" ).text( "0" );
 
         $.each( speakerRequests, (index, participant) => {
 
@@ -226,6 +246,18 @@ $( document ).ready(function() {
 
     },
 
+    continuouslyPullForSpeakerQue = function() {
+        setTimeout( () => {
+            getSpeakerQue( continuouslyPullForSpeakerQue );
+        }, 3000 );
+    },
+
+    continuouslyPullForParticipants = function() {
+        setTimeout( () => {
+            getParticipants( continuouslyPullForParticipants );
+        }, 9000 );
+    },
+
     setJoinUrl = function() {
         const joinUrl = window.location.href + "/join";
         $( "#joinUrl" ).attr( "href", joinUrl ).text( joinUrl );
@@ -233,7 +265,6 @@ $( document ).ready(function() {
 
 
     setJoinUrl();
-    };
 
     connect();
 
