@@ -26,73 +26,7 @@ public class ParticipantController {
     @GetMapping("/meeting/{meetingId}/speakerQue")
     public List<Participant> getSpeakerQue( @PathVariable int meetingId){
         log.a( meetingId );
-        List<Participant> x = participantService.getAllParticipants( meetingId );
-
-        List<Participant> VoteYesParticipantList = new ArrayList<>();
-        List<Participant> VoteNoParticipantList = new ArrayList<>();
-        List<Participant> RequestToSpeakParticipantList = new ArrayList<>();
-        List<Participant> CommentParticipantList = new ArrayList<>();
-        List<Participant> InformationParticipantList = new ArrayList<>();
-        List<Participant> BreakingQuestionParticipantList = new ArrayList<>();
-
-        List<Participant> sortedParticipantList = new ArrayList<>();
-
-        x.forEach( p -> {
-            if( p.isBreakingQuestion() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setBreakingQuestion( true );
-                p2.setBreakingQuestionTime( p.getBreakingQuestionTime() );
-                BreakingQuestionParticipantList.add( p2 );
-            }
-            if( p.isInformation() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setInformation( true );
-                p2.setInformationTime( p.getInformationTime() );
-                InformationParticipantList.add( p2 );
-            }
-            if( p.isComment() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setComment( true );
-                p2.setCommentTime( p.getCommentTime() );
-                CommentParticipantList.add( p2 );
-            }
-            if( p.isRequestToSpeak() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setRequestToSpeak( true );
-                p2.setRequestToSpeakTime( p.getRequestToSpeakTime() );
-                RequestToSpeakParticipantList.add( p2 );
-            }
-            if( p.isVoteYes() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setVoteYes( true );
-                p2.setVoteYesTime( p.getVoteYesTime() );
-                VoteYesParticipantList.add( p2 );
-            }
-            if( p.isVoteNo() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
-                p2.setVoteNo( true );
-                p2.setVoteNoTime( p.getVoteNoTime() );
-                VoteNoParticipantList.add( p2 );
-            }
-        });
-
-
-        VoteYesParticipantList.sort( Comparator.comparing(Participant::getVoteYesTime));
-        VoteNoParticipantList.sort( Comparator.comparing(Participant::getVoteNoTime));
-        RequestToSpeakParticipantList.sort( Comparator.comparing(Participant::getRequestToSpeakTime));
-        CommentParticipantList.sort( Comparator.comparing(Participant::getCommentTime));
-        InformationParticipantList.sort( Comparator.comparing(Participant::getInformationTime));
-        BreakingQuestionParticipantList.sort( Comparator.comparing(Participant::getBreakingQuestionTime));
-
-        sortedParticipantList.addAll(BreakingQuestionParticipantList);
-        sortedParticipantList.addAll(InformationParticipantList);
-        sortedParticipantList.addAll(CommentParticipantList);
-        sortedParticipantList.addAll(RequestToSpeakParticipantList);
-        sortedParticipantList.addAll(VoteYesParticipantList);
-        sortedParticipantList.addAll(VoteNoParticipantList);
-
-        log.o( sortedParticipantList );
-        return sortedParticipantList;
+        return participantService.getSpeakerQue( meetingId );
     }
 
     @GetMapping("/meeting/{meetingId}/participants")
