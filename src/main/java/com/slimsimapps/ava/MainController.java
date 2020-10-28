@@ -1,7 +1,6 @@
 package com.slimsimapps.ava;
 
 
-import com.slimsimapps.ava.badlog.BadLog;
 import com.slimsimapps.ava.badlog.BadLogService;
 import com.slimsimapps.ava.meeting.Meeting;
 import com.slimsimapps.ava.meeting.MeetingService;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -25,9 +23,6 @@ public class MainController {
 
     @Autowired
     MeetingService meetingService;
-
-    private int indexCounter = 0;
-
 
     @Autowired
     BadLogService log;
@@ -43,29 +38,21 @@ public class MainController {
     @GetMapping({ "/", "/index", "/index/" })
     public ModelAndView index( ModelMap model ) {
         log.a();
-        indexCounter++;
-        model.addAttribute( "indexCounter", indexCounter );
         log.o();
         return new ModelAndView( "index", model );
     }
-
 
     @PostMapping("/meeting")
     public ModelAndView newMeeting(Meeting m, ModelMap model ) throws Exception {
         log.a();
         Meeting m2 = meetingService.addMeeting(m);
         String url = "/meeting/" + m2.getId();
-
-        log.d("m = " + m);
-        log.d("url = " + url);
-
-
         log.o( url );
         return new ModelAndView( "redirect:" + url);
     }
 
     @GetMapping("meeting/{id}")
-    public ModelAndView myMeeting1(@PathVariable int id, ModelMap model, HttpServletRequest request ) throws Exception {
+    public ModelAndView myMeeting(@PathVariable int id, ModelMap model, HttpServletRequest request ) throws Exception {
         log.a();
         Meeting m2 = meetingService.getMeeting( id );
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
@@ -73,7 +60,6 @@ public class MainController {
         model.addAttribute( "meeting", m2 );
         model.addAttribute("joinUrl", baseUrl + "/meeting/" + id + "/join");
 
-        log.d( "id = " + id );
         log.o( model );
         return new ModelAndView( "meeting", model );
     }
@@ -84,7 +70,6 @@ public class MainController {
         Meeting m = meetingService.getMeeting(id);
         model.addAttribute( "meetingId", m.getId() );
         model.addAttribute( "meetingName", m.getName() );
-        log.d( "id = " + id );
         log.o();
         return "createMe";
     }
@@ -103,10 +88,8 @@ public class MainController {
     @GetMapping("meeting/{meetingId}/participant/{participantId}")
     public ModelAndView meetingParticipant(@PathVariable int meetingId, @PathVariable int participantId, ModelMap model ) throws Exception {
         log.a();
-        Participant p2 = participantService.getParticipant(participantId);
-        model.addAttribute("participant", p2 );
-
-        log.d( "p2 = " + p2);
+        Participant p = participantService.getParticipant(participantId);
+        model.addAttribute("participant", p );
 
         Meeting m = meetingService.getMeeting(meetingId);
         model.addAttribute( "meetingName", m.getName() );
