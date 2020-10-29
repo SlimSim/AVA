@@ -1,5 +1,6 @@
 package com.slimsimapps.ava;
 
+import com.slimsimapps.ava.badlog.BadLog;
 import com.slimsimapps.ava.badlog.BadLogService;
 import com.slimsimapps.ava.meeting.Meeting;
 import com.slimsimapps.ava.meeting.MeetingService;
@@ -18,6 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AvaApplicationTests {
 
 	@Autowired
+	BadLogService log;
+
+	@Autowired
 	ParticipantService participantService;
 
 	@Autowired
@@ -29,9 +33,27 @@ class AvaApplicationTests {
 	}
 
 	@Test
+	void testingGetAllParticipants() throws Exception {
+
+		Meeting meeting = new Meeting();
+		meetingService.addMeeting(meeting);
+
+		Participant p1 = new Participant( "Participant1");
+		Participant p2 = new Participant( "Participant2");
+
+		participantService.addParticipant( p1, meeting.getId());
+		List<Participant> meetingList1 = participantService.getAllParticipants( meeting.getId() );
+
+		participantService.addParticipant( p2, meeting.getId());
+		List<Participant> meetingList2 = participantService.getAllParticipants( meeting.getId() );
+
+		assertEquals(meetingList1.size(), 1, "meetingList1 has not correct size" );
+		assertEquals(meetingList2.size(), 2, "meetingList2 has not correct size" );
+	}
+
+	@Test
 	void testingGetSpeakerQueSorting() throws Exception{
-		int meetingId = 1;
-		Meeting meeting = new Meeting(meetingId, "TestMeeting" );
+		Meeting meeting = new Meeting();
 		meetingService.addMeeting(meeting);
 
 		Participant p1 = new Participant( "Participant1");
@@ -48,24 +70,24 @@ class AvaApplicationTests {
 		p2.setComment(true);
 		p2.setCommentTime(6000);
 
-		participantService.addParticipant( p1, meetingId);
-		participantService.addParticipant( p2, meetingId);
+		participantService.addParticipant( p1, meeting.getId());
+		participantService.addParticipant( p2, meeting.getId());
 
-		List<Participant> meetingList = participantService.getSpeakerQue( meetingId );
+		List<Participant> speakerQue = participantService.getSpeakerQue( meeting.getId() );
 
-		assertEquals(meetingList.size(), 5, "meetingList has not correct size" );
-		assertEquals( meetingList.get(0).getId(), p2.getId(), "meetingList is not sorted correctly");
-		assertEquals( meetingList.get(1).getId(), p1.getId(), "meetingList is not sorted correctly");
-		assertEquals( meetingList.get(2).getId(), p1.getId(), "meetingList is not sorted correctly");
-		assertEquals( meetingList.get(3).getId(), p1.getId(), "meetingList is not sorted correctly");
-		assertEquals( meetingList.get(4).getId(), p2.getId(), "meetingList is not sorted correctly");
+		assertEquals(speakerQue.size(), 5, "speakerQue has not correct size" );
+		assertEquals( speakerQue.get(0).getId(), p2.getId(), "speakerQue is not sorted correctly");
+		assertEquals( speakerQue.get(1).getId(), p1.getId(), "speakerQue is not sorted correctly");
+		assertEquals( speakerQue.get(2).getId(), p1.getId(), "speakerQue is not sorted correctly");
+		assertEquals( speakerQue.get(3).getId(), p1.getId(), "speakerQue is not sorted correctly");
+		assertEquals( speakerQue.get(4).getId(), p2.getId(), "speakerQue is not sorted correctly");
 
 
-		assertTrue(meetingList.get(0).isBreakingQuestion(), "meetingList.get(0) is not BreakingQuestion!");
-		assertTrue(meetingList.get(1).isBreakingQuestion(), "meetingList.get(1) is not BreakingQuestion!");
-		assertTrue(meetingList.get(2).isInformation(), "meetingList.get(2) is not Information!");
-		assertTrue(meetingList.get(3).isComment(), "meetingList.get(3) is not Comment!");
-		assertTrue(meetingList.get(4).isComment(), "meetingList.get(4) is not Comment!");
+		assertTrue(speakerQue.get(0).isBreakingQuestion(), "speakerQue.get(0) is not BreakingQuestion!");
+		assertTrue(speakerQue.get(1).isBreakingQuestion(), "speakerQue.get(1) is not BreakingQuestion!");
+		assertTrue(speakerQue.get(2).isInformation(), "speakerQue.get(2) is not Information!");
+		assertTrue(speakerQue.get(3).isComment(), "speakerQue.get(3) is not Comment!");
+		assertTrue(speakerQue.get(4).isComment(), "speakerQue.get(4) is not Comment!");
 	}
 
 }
