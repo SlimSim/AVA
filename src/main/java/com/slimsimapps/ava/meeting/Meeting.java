@@ -1,5 +1,8 @@
 package com.slimsimapps.ava.meeting;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /*
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,8 @@ import javax.persistence.Id;
 @Entity
 */
 
+@Getter
+@Setter
 public class Meeting {
 
 //    @Id
@@ -50,67 +55,4 @@ public class Meeting {
                 ;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isShowBreakingQuestion() {
-        return showBreakingQuestion;
-    }
-
-    public void setShowBreakingQuestion(boolean showBreakingQuestion) {
-        this.showBreakingQuestion = showBreakingQuestion;
-    }
-
-    public boolean isShowInformation() {
-        return showInformation;
-    }
-
-    public void setShowInformation(boolean showInformation) {
-        this.showInformation = showInformation;
-    }
-
-    public boolean isShowComment() {
-        return showComment;
-    }
-
-    public void setShowComment(boolean showComment) {
-        this.showComment = showComment;
-    }
-
-    public boolean isShowRequestToSpeak() {
-        return showRequestToSpeak;
-    }
-
-    public void setShowRequestToSpeak(boolean showRequestToSpeak) {
-        this.showRequestToSpeak = showRequestToSpeak;
-    }
-
-    public boolean isShowVoteYes() {
-        return showVoteYes;
-    }
-
-    public void setShowVoteYes(boolean showVoteYes) {
-        this.showVoteYes = showVoteYes;
-    }
-
-    public boolean isShowVoteNo() {
-        return showVoteNo;
-    }
-
-    public void setShowVoteNo(boolean showVoteNo) {
-        this.showVoteNo = showVoteNo;
-    }
 }

@@ -1,11 +1,15 @@
 package com.slimsimapps.ava.participant;
 
 import com.slimsimapps.ava.meeting.Meeting;
+import lombok.Getter;
+import lombok.Setter;
 /*
 import javax.persistence.*;
 
 @Entity
 */
+@Getter
+@Setter
 public class Participant {
 
 //    @Id
@@ -82,172 +86,4 @@ public class Participant {
                 ;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isVoteYes() {
-        return voteYes;
-    }
-
-    public void setVoteYes(boolean voteYes) {
-        this.voteYes = voteYes;
-    }
-
-    public boolean isBreakingQuestion() {
-        return breakingQuestion;
-    }
-
-    public void setBreakingQuestion(boolean breakingQuestion) {
-        this.breakingQuestion = breakingQuestion;
-    }
-
-    public boolean isRequestToSpeak() {
-        return requestToSpeak;
-    }
-
-    public void setRequestToSpeak(boolean requestToSpeak) {
-        this.requestToSpeak = requestToSpeak;
-    }
-
-
-    public Meeting getMeeting() {
-        return meeting;
-    }
-
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
-    }
-
-    public boolean isComment() {
-        return comment;
-    }
-
-    public void setComment(boolean comment) {
-        this.comment = comment;
-    }
-
-    public boolean isInformation() {
-        return information;
-    }
-
-    public void setInformation(boolean information) {
-        this.information = information;
-    }
-
-    public long getBreakingQuestionTime() {
-        return breakingQuestionTime;
-    }
-
-    public void setBreakingQuestionTime(long breakingQuestionTime) {
-        this.breakingQuestionTime = breakingQuestionTime;
-    }
-
-    public long getInformationTime() {
-        return informationTime;
-    }
-
-    public void setInformationTime(long informationTime) {
-        this.informationTime = informationTime;
-    }
-
-    public long getCommentTime() {
-        return commentTime;
-    }
-
-    public void setCommentTime(long commentTime) {
-        this.commentTime = commentTime;
-    }
-
-    public long getRequestToSpeakTime() {
-        return requestToSpeakTime;
-    }
-
-    public void setRequestToSpeakTime(long requestToSpeakTime) {
-        this.requestToSpeakTime = requestToSpeakTime;
-    }
-
-    public long getVoteYesTime() {
-        return voteYesTime;
-    }
-
-    public void setVoteYesTime(long voteYesTime) {
-        this.voteYesTime = voteYesTime;
-    }
-
-    public boolean isVoteNo() {
-        return voteNo;
-    }
-
-    public void setVoteNo(boolean voteNo) {
-        this.voteNo = voteNo;
-    }
-
-    public long getVoteNoTime() {
-        return voteNoTime;
-    }
-
-    public void setVoteNoTime(long voteNoTime) {
-        this.voteNoTime = voteNoTime;
-    }
-
-    public boolean isShowBreakingQuestion() {
-        return showBreakingQuestion;
-    }
-
-    public void setShowBreakingQuestion(boolean showBreakingQuestion) {
-        this.showBreakingQuestion = showBreakingQuestion;
-    }
-
-    public boolean isShowInformation() {
-        return showInformation;
-    }
-
-    public void setShowInformation(boolean showInformation) {
-        this.showInformation = showInformation;
-    }
-
-    public boolean isShowComment() {
-        return showComment;
-    }
-
-    public void setShowComment(boolean showComment) {
-        this.showComment = showComment;
-    }
-
-    public boolean isShowRequestToSpeak() {
-        return showRequestToSpeak;
-    }
-
-    public void setShowRequestToSpeak(boolean showRequestToSpeak) {
-        this.showRequestToSpeak = showRequestToSpeak;
-    }
-
-    public boolean isShowVoteYes() {
-        return showVoteYes;
-    }
-
-    public void setShowVoteYes(boolean showVoteYes) {
-        this.showVoteYes = showVoteYes;
-    }
-
-    public boolean isShowVoteNo() {
-        return showVoteNo;
-    }
-
-    public void setShowVoteNo(boolean showVoteNo) {
-        this.showVoteNo = showVoteNo;
-    }
 }
