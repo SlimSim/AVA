@@ -1,6 +1,5 @@
 package com.slimsimapps.ava;
 
-import com.slimsimapps.ava.badlog.BadLog;
 import com.slimsimapps.ava.badlog.BadLogService;
 import com.slimsimapps.ava.meeting.Meeting;
 import com.slimsimapps.ava.meeting.MeetingService;
