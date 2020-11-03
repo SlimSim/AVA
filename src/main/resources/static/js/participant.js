@@ -39,7 +39,7 @@ $( document ).ready(function() {
             "active" : active
         } );
 
-        if( stompClient.connected ) {
+        if( stompClient != null && stompClient.connected ) {
 	        stompClient.send( "/app/request", {}, data );
         } else {
 	        $.ajax({
@@ -94,10 +94,11 @@ $( document ).ready(function() {
     continuouslyPullMyRequests = function() {
         setTimeout( () => {
             getMyRequests( continuouslyPullMyRequests );
-        }, 5000 );
+        }, 1000 );
     };
 
-    connect();
+    //connect(); // webSockets
+    continuouslyPullMyRequests(); // noWebSockets;
 
     $( ".request-button" ).on( "click", submitForm );
 

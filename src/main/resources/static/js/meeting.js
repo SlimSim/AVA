@@ -65,7 +65,7 @@ $( document ).ready(function() {
 			"active" : false
 		} );
 
-        if( stompClient.connected ) {
+        if( stompClient != null && stompClient.connected ) {
 	        stompClient.send( "/app/request", {}, data );
         } else {
 	        $.ajax({
@@ -256,7 +256,7 @@ $( document ).ready(function() {
     continuouslyPullForSpeakerQue = function() {
         setTimeout( () => {
             getSpeakerQue( continuouslyPullForSpeakerQue );
-        }, 3000 );
+        }, 1000 );
     },
 
     continuouslyPullForParticipants = function() {
@@ -273,7 +273,9 @@ $( document ).ready(function() {
 
     setJoinUrl();
 
-    connect();
+    //connect();
+    continuouslyPullForSpeakerQue();
+    continuouslyPullForParticipants();
 
     getSpeakerQue();
     getParticipants();
