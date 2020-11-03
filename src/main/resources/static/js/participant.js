@@ -13,11 +13,13 @@ $( document ).ready(function() {
         var socket = new SockJS( socketUrl );
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
+            console.log( funk + ": stompClient.connect function -> frame", frame );
             stompClient.subscribe('/topic/request', function (response) {
+	            console.log( funk + ": stompClient.subscribe 'topic/request'-> response:", response );
                 requestReceived( JSON.parse( response.body ) );
             });
         }, function( error ) {
-			console.log( "connect: error", error );
+			console.log( funk + ": error", error );
 			continuouslyPullMyRequests();
 		});
     },

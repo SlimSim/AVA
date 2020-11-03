@@ -31,8 +31,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         //registry.addEndpoint("/gs-guide-websocket").withSockJS();
 
         registry.addEndpoint("/gs-guide-websocket")
-        .setHandshakeHandler(new DefaultHandshakeHandler(new TomcatRequestUpgradeStrategy()))
-        .withSockJS();
+                .setHandshakeHandler(new DefaultHandshakeHandler(new TomcatRequestUpgradeStrategy()))
+                //.setAllowedOrigins( "slimsim.heliohost.org" )
+                //.setAllowedOrigins( "*" ) // this one worked, but was buggy, slow and was interrupted after a while...
+                .withSockJS();
 
         log.o(registry);
     }

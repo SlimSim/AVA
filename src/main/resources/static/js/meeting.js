@@ -31,17 +31,24 @@ $( document ).ready(function() {
     },
 
     connect = function() {
+        const funk = "connect";
+        console.log( "*** " + funk + ": socketUrl", socketUrl );
         var socket = new SockJS( socketUrl );
+        console.log( "*** " + funk + ": socket", socket );
         stompClient = Stomp.over(socket);
+        console.log( "*** " + funk + ": stompClient", stompClient );
         stompClient.connect({}, function (frame) {
+            console.log( "*** " + funk + ": stompClient.connect function -> frame", frame );
             stompClient.subscribe('/topic/newParticipant', function (response) {
+	            console.log( "*** " + funk + ": stompClient.subscribe 'topic/newParticipant' -> response:", response );
                 addParticipant( JSON.parse( response.body ) );
             });
             stompClient.subscribe('/topic/request', function (response) {
+	            console.log( "*** " + funk + ": stompClient.subscribe 'topic/request' -> response:", response );
                 addRequest( JSON.parse( response.body ) );
             });
         }, function( error ) {
-            console.log( "connect: error", error );
+            console.log( "*** " + funk + ": error", error );
 	        continuouslyPullForSpeakerQue();
             continuouslyPullForParticipants();
         });
