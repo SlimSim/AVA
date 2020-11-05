@@ -2,14 +2,12 @@ package com.slimsimapps.ava.service;
 
 import com.slimsimapps.ava.dto.mapper.MeetingMapper;
 import com.slimsimapps.ava.dto.mapper.ParticipantMapper;
-import com.slimsimapps.ava.dto.mapper.RequestMapper;
 import com.slimsimapps.ava.dto.model.MeetingDto;
 import com.slimsimapps.ava.dto.model.ParticipantDto;
 import com.slimsimapps.ava.dto.model.RequestDto;
-import com.slimsimapps.ava.enums.TypeOfRequest;
+import com.slimsimapps.ava.enums.RequestType;
 import com.slimsimapps.ava.model.Meeting;
 import com.slimsimapps.ava.model.Participant;
-import com.slimsimapps.ava.model.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -56,27 +54,27 @@ public class ParticipantService {
     public ParticipantDto setParticipantRequest( RequestDto requestDto ) throws Exception {
         log.a(requestDto);
         int participantId = requestDto.getParticipantId();
-        TypeOfRequest typeOfRequest = requestDto.getTypeOfRequest();
+        RequestType requestType = requestDto.getRequestType();
         boolean active = requestDto.isActive();
 
         Participant p = getParticipantModel( participantId );
 
-        if( typeOfRequest == TypeOfRequest.breakingQuestion ) {
+        if( requestType == RequestType.breakingQuestion ) {
             p.setBreakingQuestion( active );
             p.setBreakingQuestionTime( new Date().getTime() );
-        } else if ( typeOfRequest == TypeOfRequest.information ) {
+        } else if ( requestType == RequestType.information ) {
             p.setInformation( active );
             p.setInformationTime( new Date().getTime() );
-        } else if ( typeOfRequest == TypeOfRequest.comment ) {
+        } else if ( requestType == RequestType.comment ) {
             p.setComment( active );
             p.setCommentTime( new Date().getTime() );
-        } else if ( typeOfRequest == TypeOfRequest.requestToSpeak ) {
+        } else if ( requestType == RequestType.requestToSpeak ) {
             p.setRequestToSpeak( active );
             p.setRequestToSpeakTime( new Date().getTime() );
-        } else if ( typeOfRequest == TypeOfRequest.voteYes) {
+        } else if ( requestType == RequestType.voteYes) {
             p.setVoteYes( active );
             p.setVoteYesTime( new Date().getTime() );
-        } else if ( typeOfRequest == TypeOfRequest.voteNo) {
+        } else if ( requestType == RequestType.voteNo) {
             p.setVoteNo( active );
             p.setVoteNoTime( new Date().getTime() );
         }

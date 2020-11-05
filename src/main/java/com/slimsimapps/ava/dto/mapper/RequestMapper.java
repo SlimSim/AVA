@@ -8,7 +8,7 @@ public class RequestMapper {
 		return new Request()
 				.setParticipantId( requestDto.getParticipantId() )
 				.setParticipantName( requestDto.getParticipantName() )
-				.setTypeOfRequest( requestDto.getTypeOfRequest() )
+				.setRequestType( requestDto.getRequestType() )
 				.setActive( requestDto.isActive() );
 	}
 

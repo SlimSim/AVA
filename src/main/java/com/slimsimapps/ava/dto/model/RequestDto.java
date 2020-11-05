@@ -2,7 +2,7 @@ package com.slimsimapps.ava.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.slimsimapps.ava.enums.TypeOfRequest;
+import com.slimsimapps.ava.enums.RequestType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +20,6 @@ public class RequestDto {
 
 	private int participantId;
 	private String participantName;
-	private TypeOfRequest typeOfRequest;
+	private RequestType requestType;
 	private boolean active;
 }
