@@ -56,6 +56,7 @@ class AvaApplicationTests {
 		meetingService.addMeeting(meeting);
 
 		ParticipantDto p1 = new ParticipantDto()
+									.setId(1)
 				                    .setName( "Participant1")
 									.setComment(true)
 									.setCommentTime(2000)
@@ -65,6 +66,7 @@ class AvaApplicationTests {
 									.setInformationTime(5000);
 
 		ParticipantDto p2 = new ParticipantDto()
+									.setId(2)
 				                    .setName( "Participant2")
 									.setBreakingQuestion(true)
 									.setBreakingQuestionTime(3000)
@@ -75,6 +77,12 @@ class AvaApplicationTests {
 		participantService.addParticipant( p2, meeting.getId());
 
 		List<ParticipantDto> speakerQue = participantService.getSpeakerQue( meeting.getId() );
+
+		for( int i = 0; i<speakerQue.size(); i++) {
+			log.i(i + " : " + speakerQue.get( i ) );
+		}
+		log.i("p1: " + p1 );
+		log.i("p2: " + p2 );
 
 		assertEquals(speakerQue.size(), 5, "speakerQue has not correct size" );
 		assertEquals( speakerQue.get(0).getId(), p2.getId(), "speakerQue is not sorted correctly");
