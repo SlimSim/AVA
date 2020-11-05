@@ -1,7 +1,8 @@
-package com.slimsimapps.ava.meeting;
+package com.slimsimapps.ava.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /*
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class Meeting {
 
 //    @Id

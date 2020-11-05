@@ -1,6 +1,7 @@
-package com.slimsimapps.ava.badlog;
+package com.slimsimapps.ava.service;
 
-import com.slimsimapps.ava.MainController;
+import com.slimsimapps.ava.model.badlog.BadLog;
+import com.slimsimapps.ava.controller.v1.ui.MainController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

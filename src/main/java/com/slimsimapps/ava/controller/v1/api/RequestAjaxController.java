@@ -1,9 +1,10 @@
-package com.slimsimapps.ava.request;
+package com.slimsimapps.ava.controller.v1.api;
 
-import com.slimsimapps.ava.badlog.BadLogService;
-import com.slimsimapps.ava.meeting.Meeting;
-import com.slimsimapps.ava.participant.Participant;
-import com.slimsimapps.ava.participant.ParticipantService;
+import com.slimsimapps.ava.dto.model.MeetingDto;
+import com.slimsimapps.ava.dto.model.ParticipantDto;
+import com.slimsimapps.ava.dto.model.RequestDto;
+import com.slimsimapps.ava.service.BadLogService;
+import com.slimsimapps.ava.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,19 +23,19 @@ public class RequestAjaxController {
     ParticipantService participantService;
 
     @PostMapping( "/ajax/request" )
-    public List<Participant> request(@RequestBody Request request) throws Exception {
+    public List<ParticipantDto> request(@RequestBody RequestDto request) throws Exception {
         log.a( request );
         participantService.setParticipantRequest( request );
-        Meeting meeting = participantService.getParticipant( request.getParticipantId() ).getMeeting();
+        MeetingDto meeting = participantService.getParticipantMeeting( request.getParticipantId() );
         log.o();
         return participantService.getSpeakerQue( meeting.getId() );
     }
 
     @PostMapping( "/ajax/singleRequest" )
-    public Participant singleRequest(@RequestBody Request request) throws Exception {
+    public ParticipantDto singleRequest(@RequestBody RequestDto request) throws Exception {
         log.a(request);
         participantService.setParticipantRequest( request );
-        Participant p = participantService.getParticipant( request.getParticipantId() );
+        ParticipantDto p = participantService.getParticipant( request.getParticipantId() );
         log.o(p);
         return p;
     }

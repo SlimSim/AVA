@@ -1,10 +1,13 @@
-package com.slimsimapps.ava.meeting;
+package com.slimsimapps.ava.service;
 
-import com.slimsimapps.ava.badlog.BadLogService;
+import com.slimsimapps.ava.dto.mapper.MeetingMapper;
+import com.slimsimapps.ava.dto.model.MeetingDto;
+import com.slimsimapps.ava.model.Meeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MeetingService {
@@ -18,25 +21,25 @@ public class MeetingService {
 
     private ArrayList<Meeting> meetingList = new ArrayList<>();
 
-    public List<Meeting> getAllMeetings() {
+    public List<MeetingDto> getAllMeetings() {
         log.a();
         //List<Meeting> x = meetingRepository.findAll();;
         log.o();
-        return meetingList;
+        return meetingList.stream().map( MeetingMapper::toMeetingDto ).collect(Collectors.toList());
     }
 
-    public Meeting getMeeting(int id) throws Exception {
+    public MeetingDto getMeeting(int id) throws Exception {
         log.a( id );
         log.o();
-        return meetingList.stream().filter( meeting -> meeting.getId() == id ).findFirst().get();
+        return MeetingMapper.toMeetingDto( meetingList.stream().filter( meeting -> meeting.getId() == id ).findFirst().get() );
         //return meetingRepository.findById(id).orElseThrow(
         //        () -> new Exception("No Meeting found with id " + id) );
     }
 
-    public Meeting addMeeting(Meeting meeting) throws Exception {
-        log.a( meeting );
-        if( meeting == null ) {
-            throw new Exception("No body found, meeting is null");
+    public MeetingDto addMeeting(MeetingDto meetingDto) throws Exception {
+        log.a( meetingDto );
+        if( meetingDto == null ) {
+            throw new Exception("No body found, meetingDto is null");
         }
         ArrayList<Integer> ids = new ArrayList<>();
         for (Meeting m : meetingList) {
@@ -47,19 +50,19 @@ public class MeetingService {
             id++;
         }
         log.d( "id = " + id );
-        meeting.setId( id );
-        meetingList.add( meeting );
-        //Meeting m = meetingRepository.save(meeting);
-        log.o(meeting);
-        return meeting;
+        meetingDto.setId( id );
+        meetingList.add( MeetingMapper.toMeeting( meetingDto ) );
+        //Meeting m = meetingRepository.save(meetingDto);
+        log.o(meetingDto);
+        return meetingDto;
     }
 
-    public Meeting updateMeeting(int id, Meeting updatedMeetingData) throws Exception {
+    public MeetingDto updateMeeting(int id, MeetingDto updatedMeetingData) throws Exception {
         log.a(id, updatedMeetingData);
         //if( !meetingRepository.existsById(id) ) {
         //    throw new Exception("No Meeting found with id " + id);
         //}
-        meetingList.set( id, updatedMeetingData );
+        meetingList.set( id, MeetingMapper.toMeeting( updatedMeetingData ) );
         log.o(updatedMeetingData);
         return updatedMeetingData;
         //return meetingRepository.save(updatedMeetingData);

@@ -1,6 +1,6 @@
 package com.slimsimapps.ava;
 
-import com.slimsimapps.ava.badlog.BadLogService;
+import com.slimsimapps.ava.service.BadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

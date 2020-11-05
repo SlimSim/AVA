@@ -73,8 +73,13 @@ $( document ).ready(function() {
         $.ajax({
             url: myRequestsUrl
         })
-        .done( ( myRequests ) => {
-	        repopulateMyRequests( myRequests );
+        .done( ( response ) => {
+            if( response.status != "OK" ) {
+                console.error( "error on get " + myRequestsUrl + ": ", response );
+                alert( "Fel vid hämtnign av deltagarkö, försök igen" );
+                return;
+            }
+	        repopulateMyRequests( response.payload );
 	        callback && callback();
         } );
 

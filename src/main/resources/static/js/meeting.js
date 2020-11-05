@@ -14,18 +14,30 @@ $( document ).ready(function() {
         $.ajax({
             url: speakerQueUrl
         })
-        .done( ( speakerQue ) => {
-	        repopulateSpeakerQue( speakerQue );
+        .done( ( response ) => {
+            if( response.status != "OK" ) {
+                console.error( "error on get " + speakerQueUrl + ": ", response );
+                alert( "Fel vid hämtnign av deltagarkö, försök igen" );
+                return;
+            }
+	        repopulateSpeakerQue( response.payload );
 	        callback && callback();
         } );
     },
 
     getParticipants = function( callback ) {
+        console.log("participantsUrl", participantsUrl);
         $.ajax({
             url: participantsUrl
         })
-        .done( ( participants ) => {
-            repopulateParticipantList( participants );
+        .done( ( response ) => {
+            if( response.status != "OK" ) {
+                console.error( "error on get " + participantsUrl + ": ", response );
+                alert( "Fel vid hämtnign av deltagare, försök igen" );
+                return;
+            }
+            console.log("response", response);
+            repopulateParticipantList( response.payload );
 	        callback && callback();
         } );
     },
@@ -273,9 +285,9 @@ $( document ).ready(function() {
 
     setJoinUrl();
 
-    //connect();
-    continuouslyPullForSpeakerQue();
-    continuouslyPullForParticipants();
+    //connect(); // webSockets
+    continuouslyPullForSpeakerQue(); // noWebSockets
+    continuouslyPullForParticipants(); // noWebSockets
 
     getSpeakerQue();
     getParticipants();

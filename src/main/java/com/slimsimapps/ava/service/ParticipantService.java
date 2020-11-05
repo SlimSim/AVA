@@ -1,9 +1,15 @@
-package com.slimsimapps.ava.participant;
+package com.slimsimapps.ava.service;
 
-import com.slimsimapps.ava.badlog.BadLogService;
-import com.slimsimapps.ava.meeting.Meeting;
-import com.slimsimapps.ava.meeting.MeetingService;
-import com.slimsimapps.ava.request.Request;
+import com.slimsimapps.ava.dto.mapper.MeetingMapper;
+import com.slimsimapps.ava.dto.mapper.ParticipantMapper;
+import com.slimsimapps.ava.dto.mapper.RequestMapper;
+import com.slimsimapps.ava.dto.model.MeetingDto;
+import com.slimsimapps.ava.dto.model.ParticipantDto;
+import com.slimsimapps.ava.dto.model.RequestDto;
+import com.slimsimapps.ava.enums.TypeOfRequest;
+import com.slimsimapps.ava.model.Meeting;
+import com.slimsimapps.ava.model.Participant;
+import com.slimsimapps.ava.model.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -32,7 +38,7 @@ public class ParticipantService {
     List<Participant> participants = new ArrayList<>();
 
 
-    public List<Participant> getAllParticipants( int meetingId ) {
+    public List<ParticipantDto> getAllParticipantDtos(int meetingId ) {
         log.a(meetingId);
         /*
         List<Participant> participants = new ArrayList<>();
@@ -41,56 +47,66 @@ public class ParticipantService {
         return participantRepository.findByMeetingId( meetingId );
         */
         log.o();
-        return participants.stream().filter(p -> p.getMeeting().getId() == meetingId).collect(Collectors.toList());
+        return participants.stream()
+                       .filter(p -> p.getMeeting().getId() == meetingId)
+                       .map( ParticipantMapper::toParticipantDto )
+                       .collect(Collectors.toList());
     }
 
-    public Participant setParticipantRequest( Request request ) throws Exception {
-        log.a(request);
-        int participantId = request.getParticipantId();
-        Request.TypeOfRequest typeOfRequest = request.getTypeOfRequest();
-        boolean active = request.isActive();
+    public ParticipantDto setParticipantRequest( RequestDto requestDto ) throws Exception {
+        log.a(requestDto);
+        int participantId = requestDto.getParticipantId();
+        TypeOfRequest typeOfRequest = requestDto.getTypeOfRequest();
+        boolean active = requestDto.isActive();
 
-        Participant p = getParticipant( participantId );
+        Participant p = getParticipantModel( participantId );
 
-        if( typeOfRequest == Request.TypeOfRequest.breakingQuestion ) {
+        if( typeOfRequest == TypeOfRequest.breakingQuestion ) {
             p.setBreakingQuestion( active );
             p.setBreakingQuestionTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.information ) {
+        } else if ( typeOfRequest == TypeOfRequest.information ) {
             p.setInformation( active );
             p.setInformationTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.comment ) {
+        } else if ( typeOfRequest == TypeOfRequest.comment ) {
             p.setComment( active );
             p.setCommentTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.requestToSpeak ) {
+        } else if ( typeOfRequest == TypeOfRequest.requestToSpeak ) {
             p.setRequestToSpeak( active );
             p.setRequestToSpeakTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.voteYes) {
+        } else if ( typeOfRequest == TypeOfRequest.voteYes) {
             p.setVoteYes( active );
             p.setVoteYesTime( new Date().getTime() );
-        } else if ( typeOfRequest == Request.TypeOfRequest.voteNo) {
+        } else if ( typeOfRequest == TypeOfRequest.voteNo) {
             p.setVoteNo( active );
             p.setVoteNoTime( new Date().getTime() );
         }
 
-        template.convertAndSend("/topic/request", request);
+        template.convertAndSend("/topic/request", requestDto);
 
         log.o();
-        return updateParticipant( participantId, p.getMeeting().getId(), p );
+        return ParticipantMapper.toParticipantDto( updateParticipantModel( participantId, p.getMeeting().getId(), p ) );
     }
 
-    public Participant getParticipant(int id) throws Exception {
+    private Participant getParticipantModel(int id) throws Exception {
         log.a(id);
         log.o();
-        return participants.stream().filter( participant -> participant.getId() == id ).findFirst().get();
+        return participants.stream().filter(participant -> participant.getId() == id ).findFirst().get();
         //return participantRepository.findById(id).orElseThrow(
         //        () -> new Exception("No Participant found with id " + id) );
     }
 
-    public Participant addParticipant(Participant participant, int meetingId) throws Exception {
-        log.a(participant, meetingId);
-        if( participant == null ) {
+    public ParticipantDto getParticipant(int id) throws Exception {
+        log.a(id);
+        return ParticipantMapper.toParticipantDto( getParticipantModel( id ) );
+    }
+
+    public ParticipantDto addParticipant(ParticipantDto participantDto, int meetingId) throws Exception {
+        log.a(participantDto, meetingId);
+        if( participantDto == null ) {
             throw new Exception("No body found, participant is null");
         }
+
+        Participant participant = ParticipantMapper.toParticipant( participantDto );
 
         ArrayList<Integer> ids = new ArrayList<>();
         for (Participant p : participants) {
@@ -102,7 +118,7 @@ public class ParticipantService {
         }
         participant.setId( id );
 
-        Meeting meeting = meetingService.getMeeting( meetingId );
+        MeetingDto meeting = meetingService.getMeeting( meetingId );
         participant.setShowBreakingQuestion( meeting.isShowBreakingQuestion() );
         participant.setShowInformation( meeting.isShowInformation() );
         participant.setShowComment( meeting.isShowComment() );
@@ -120,11 +136,11 @@ public class ParticipantService {
         template.convertAndSend("/topic/newParticipant", participant);
 
         log.o(participant);
-        return participant;
+        return ParticipantMapper.toParticipantDto( participant );
         //return participantRepository.save(participant);
     }
 
-    public Participant updateParticipant(int participantId, int meetingId, Participant updatedParticipantData) throws Exception {
+    private Participant updateParticipantModel(int participantId, int meetingId, Participant updatedParticipantData) throws Exception {
         log.a(participantId, meetingId, updatedParticipantData);
         /*
         if( !participantRepository.existsById(participantId) ) {
@@ -135,7 +151,7 @@ public class ParticipantService {
         */
         updatedParticipantData.setMeeting( new Meeting( meetingId ) );
 
-        Meeting meeting = meetingService.getMeeting( meetingId );
+        MeetingDto meeting = meetingService.getMeeting( meetingId );
         updatedParticipantData.setShowBreakingQuestion( meeting.isShowBreakingQuestion() );
         updatedParticipantData.setShowInformation( meeting.isShowInformation() );
         updatedParticipantData.setShowComment( meeting.isShowComment() );
@@ -155,6 +171,12 @@ public class ParticipantService {
         participants.set( participantIndex, updatedParticipantData );
         log.o(updatedParticipantData);
         return updatedParticipantData;
+
+    }
+
+    public ParticipantDto updateParticipant(int participantId, int meetingId, ParticipantDto updatedParticipantDtoData) throws Exception {
+        return ParticipantMapper.toParticipantDto( updateParticipantModel(participantId, meetingId, ParticipantMapper.toParticipant( updatedParticipantDtoData )) );
+
     }
 
     public void deleteParticipant(int id) throws Exception {
@@ -170,52 +192,52 @@ public class ParticipantService {
         log.o();
     }
 
-    public List<Participant> getSpeakerQue(int meetingId) {
+    public List<ParticipantDto> getSpeakerQue(int meetingId) {
         log.a();
-        List<Participant> x = getAllParticipants( meetingId );
+        List<ParticipantDto> x = getAllParticipantDtos( meetingId );
 
-        List<Participant> VoteYesParticipantList = new ArrayList<>();
-        List<Participant> VoteNoParticipantList = new ArrayList<>();
-        List<Participant> RequestToSpeakParticipantList = new ArrayList<>();
-        List<Participant> CommentParticipantList = new ArrayList<>();
-        List<Participant> InformationParticipantList = new ArrayList<>();
-        List<Participant> BreakingQuestionParticipantList = new ArrayList<>();
+        List<ParticipantDto> VoteYesParticipantList = new ArrayList<>();
+        List<ParticipantDto> VoteNoParticipantList = new ArrayList<>();
+        List<ParticipantDto> RequestToSpeakParticipantList = new ArrayList<>();
+        List<ParticipantDto> CommentParticipantList = new ArrayList<>();
+        List<ParticipantDto> InformationParticipantList = new ArrayList<>();
+        List<ParticipantDto> BreakingQuestionParticipantList = new ArrayList<>();
 
-        List<Participant> sortedParticipantList = new ArrayList<>();
+        List<ParticipantDto> sortedParticipantList = new ArrayList<>();
 
         x.forEach( p -> {
             if( p.isBreakingQuestion() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setBreakingQuestion( true );
                 p2.setBreakingQuestionTime( p.getBreakingQuestionTime() );
                 BreakingQuestionParticipantList.add( p2 );
             }
             if( p.isInformation() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setInformation( true );
                 p2.setInformationTime( p.getInformationTime() );
                 InformationParticipantList.add( p2 );
             }
             if( p.isComment() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setComment( true );
                 p2.setCommentTime( p.getCommentTime() );
                 CommentParticipantList.add( p2 );
             }
             if( p.isRequestToSpeak() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setRequestToSpeak( true );
                 p2.setRequestToSpeakTime( p.getRequestToSpeakTime() );
                 RequestToSpeakParticipantList.add( p2 );
             }
             if( p.isVoteYes() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setVoteYes( true );
                 p2.setVoteYesTime( p.getVoteYesTime() );
                 VoteYesParticipantList.add( p2 );
             }
             if( p.isVoteNo() ) {
-                Participant p2 = new Participant( p.getName(), p.getId() );
+                ParticipantDto p2 = new ParticipantDto().setName( p.getName() ).setId( p.getId() );
                 p2.setVoteNo( true );
                 p2.setVoteNoTime( p.getVoteNoTime() );
                 VoteNoParticipantList.add( p2 );
@@ -223,12 +245,12 @@ public class ParticipantService {
         });
 
 
-        VoteYesParticipantList.sort( Comparator.comparing(Participant::getVoteYesTime));
-        VoteNoParticipantList.sort( Comparator.comparing(Participant::getVoteNoTime));
-        RequestToSpeakParticipantList.sort( Comparator.comparing(Participant::getRequestToSpeakTime));
-        CommentParticipantList.sort( Comparator.comparing(Participant::getCommentTime));
-        InformationParticipantList.sort( Comparator.comparing(Participant::getInformationTime));
-        BreakingQuestionParticipantList.sort( Comparator.comparing(Participant::getBreakingQuestionTime));
+        VoteYesParticipantList.sort( Comparator.comparing(ParticipantDto::getVoteYesTime));
+        VoteNoParticipantList.sort( Comparator.comparing(ParticipantDto::getVoteNoTime));
+        RequestToSpeakParticipantList.sort( Comparator.comparing(ParticipantDto::getRequestToSpeakTime));
+        CommentParticipantList.sort( Comparator.comparing(ParticipantDto::getCommentTime));
+        InformationParticipantList.sort( Comparator.comparing(ParticipantDto::getInformationTime));
+        BreakingQuestionParticipantList.sort( Comparator.comparing(ParticipantDto::getBreakingQuestionTime));
 
         sortedParticipantList.addAll(BreakingQuestionParticipantList);
         sortedParticipantList.addAll(InformationParticipantList);
@@ -239,5 +261,9 @@ public class ParticipantService {
 
         log.o( sortedParticipantList );
         return sortedParticipantList;
+    }
+
+    public MeetingDto getParticipantMeeting(int participantId) throws Exception {
+        return MeetingMapper.toMeetingDto( getParticipantModel( participantId ).getMeeting() );
     }
 }

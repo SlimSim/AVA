@@ -1,6 +1,8 @@
-package com.slimsimapps.ava.badlog;
+package com.slimsimapps.ava.controller.v1.ui;
 
 
+import com.slimsimapps.ava.model.badlog.BadLog;
+import com.slimsimapps.ava.service.BadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.slimsimapps.ava.badlog;
+package com.slimsimapps.ava.model.badlog;
 
 import lombok.Getter;
 import lombok.Setter;
