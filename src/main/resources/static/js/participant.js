@@ -28,14 +28,14 @@ $( document ).ready(function() {
         if( request.participantId != participantId ) {
             return;
         }
-        $( "#" + request.typeOfRequest ).toggleClass( "active", request.active );
+        $( "#" + request.requestType ).toggleClass( "active", request.active );
     },
 
-    sendRequest = function(participantId, participantName, typeOfRequest, active) {
+    sendRequest = function(participantId, participantName, requestType, active) {
         const data = JSON.stringify( {
             "participantId": participantId,
             "participantName" : participantName,
-            "typeOfRequest" : typeOfRequest,
+            "requestType" : requestType,
             "active" : active
         } );
 
@@ -61,11 +61,11 @@ $( document ).ready(function() {
         event.preventDefault();
 
         var $target = $( event.target ),
-            typeOfRequest = $target.attr( "id" ),
+            requestType = $target.attr( "id" ),
             participantName = $("#participantName").text(),
             active = !$target.hasClass( "active" );
 
-        sendRequest(participantId, participantName, typeOfRequest, active);
+        sendRequest(participantId, participantName, requestType, active);
     },
 
     getMyRequests = function( callback ){

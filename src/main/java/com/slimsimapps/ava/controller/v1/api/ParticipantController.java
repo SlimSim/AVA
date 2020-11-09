@@ -47,7 +47,7 @@ public class ParticipantController {
         System.out.println( "RequestController.request ->");
         System.out.println( "RequestController.request: request = " + request);
 
-        Participant p = participantService.setParticipantRequest( request.getParticipantId(), request.getTypeOfRequest(), request.isActive() );
+        Participant p = participantService.setParticipantRequest( request.getParticipantId(), request.getRequestType(), request.isActive() );
         System.out.println( "RequestController.request: p = " + p);
 
         return request;

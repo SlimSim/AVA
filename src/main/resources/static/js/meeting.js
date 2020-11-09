@@ -69,10 +69,10 @@ $( document ).ready(function() {
     killRequest = function( event ) {
         const individual = $( event.target ).closest( "[participant-id]" );
         const participantId = individual.attr("participant-id");
-        const typeOfRequest = individual.attr("type-of-request");
+        const requestType = individual.attr("type-of-request");
 		const data = JSON.stringify( {
 			"participantId": participantId,
-			"typeOfRequest" : typeOfRequest,
+			"requestType" : requestType,
 			"participantName" : "null",
 			"active" : false
 		} );
@@ -107,39 +107,39 @@ $( document ).ready(function() {
     },
 
     addRequest = function(request) {
-        $("#speakerQue").append("<tr><td>" + request.participantName + " " + request.typeOfRequest + "</td></tr>");
+        $("#speakerQue").append("<tr><td>" + request.participantName + " " + request.requestType + "</td></tr>");
 
         if( request.active ) {
-            createSpeakerQueRow( request.participantId, request.participantName, request.typeOfRequest );
+            createSpeakerQueRow( request.participantId, request.participantName, request.requestType );
         } else {
-            removeSpeakerQueRow( request.participantId, request.typeOfRequest );
+            removeSpeakerQueRow( request.participantId, request.requestType );
         }
     },
 
-    removeSpeakerQueRow = function( participantId, typeOfRequest ) {
+    removeSpeakerQueRow = function( participantId, requestType ) {
 
         let currentQue = "";
-        if( typeOfRequest == "breakingQuestion" )  {
+        if( requestType == "breakingQuestion" )  {
             currentQue = "#speakerQueBreakingQuestion";
             decrementHtmlCounter( "#breakingQuestionCounter" );
         }
-        if( typeOfRequest == "information" )       {
+        if( requestType == "information" )       {
             currentQue = "#speakerQueInformation";
             decrementHtmlCounter( "#informationCounter" );
         }
-        if( typeOfRequest == "comment" )           {
+        if( requestType == "comment" )           {
             currentQue = "#speakerQueComment";
             decrementHtmlCounter( "#commentCounter" );
         }
-        if( typeOfRequest == "requestToSpeak" )    {
+        if( requestType == "requestToSpeak" )    {
             currentQue = "#speakerQueRequestToSpeak";
             decrementHtmlCounter( "#requestToSpeakCounter" );
         }
-        if( typeOfRequest == "voteYes" )        {
+        if( requestType == "voteYes" )        {
             currentQue = "#speakerQueVoteYes";
             decrementHtmlCounter( "#voteYesCounter" );
         }
-        if( typeOfRequest == "voteNo" )        {
+        if( requestType == "voteNo" )        {
             currentQue = "#speakerQueVoteNo";
             decrementHtmlCounter( "#voteNoCounter" );
         }
@@ -156,11 +156,11 @@ $( document ).ready(function() {
         $( selector ).text( Number( $( selector ).text() ) - 1 );
     },
 
-    createSpeakerQueRow = function( participantId, participantName, typeOfRequest ) {
+    createSpeakerQueRow = function( participantId, participantName, requestType ) {
 
         const individual = $( "<div>" )
             .attr("participant-id", participantId)
-            .attr("type-of-request", typeOfRequest)
+            .attr("type-of-request", requestType)
             .addClass( "pb-1" );
         const card = $( "<div>" ).addClass( "card" );
         const cardBody = $( "<div>" ).addClass( "row card-body p-1 m-0" );
@@ -175,37 +175,37 @@ $( document ).ready(function() {
 
         const statusArea = $( "<div>" ).addClass( "col" );
 
-        if( typeOfRequest == "breakingQuestion" )  {
+        if( requestType == "breakingQuestion" )  {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Ordningsfråga" ) );
             card.addClass( "bg-danger text-white" );
             currentQue = "#speakerQueBreakingQuestion";
             incrementHtmlCounter( "#breakingQuestionCounter" );
         }
-        if( typeOfRequest == "information" )       {
+        if( requestType == "information" )       {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Sakupplysning" ) );
             card.addClass( "bg-warning" );
             currentQue = "#speakerQueInformation";
             incrementHtmlCounter( "#informationCounter" );
         }
-        if( typeOfRequest == "comment" )           {
+        if( requestType == "comment" )           {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Kommentar" ) );
             card.addClass( "bg-info text-white" );
             currentQue = "#speakerQueComment";
             incrementHtmlCounter( "#commentCounter" );
         }
-        if( typeOfRequest == "requestToSpeak" )    {
+        if( requestType == "requestToSpeak" )    {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Begär ordet" ) );
             card.addClass( "bg-white" );
             currentQue = "#speakerQueRequestToSpeak";
             incrementHtmlCounter( "#requestToSpeakCounter" );
         }
-        if( typeOfRequest == "voteYes" )        {
+        if( requestType == "voteYes" )        {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta JA" ) );
             card.addClass( "bg-yes" );
             currentQue = "#speakerQueVoteYes";
             incrementHtmlCounter( "#voteYesCounter" );
         }
-        if( typeOfRequest == "voteNo" )        {
+        if( requestType == "voteNo" )        {
             statusArea.append( $( "<p>" ).addClass("m-0").text( "Rösta NEJ" ) );
             card.addClass( "bg-no" );
             currentQue = "#speakerQueVoteNo";
@@ -233,7 +233,7 @@ $( document ).ready(function() {
 
         $.each( speakerRequests, (index, participant) => {
 
-            createSpeakerQueRow( participant.id, participant.name, participant.typeOfRequest );
+            createSpeakerQueRow( participant.id, participant.name, participant.requestType );
 
             if( participant.breakingQuestion )  {
                 createSpeakerQueRow( participant.id, participant.name, "breakingQuestion" );

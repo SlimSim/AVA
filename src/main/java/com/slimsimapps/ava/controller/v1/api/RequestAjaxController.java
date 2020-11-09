@@ -34,10 +34,7 @@ public class RequestAjaxController {
     @PostMapping( "/ajax/singleRequest" )
     public ParticipantDto singleRequest(@RequestBody RequestDto request) throws Exception {
         log.a(request);
-        participantService.setParticipantRequest( request );
-        ParticipantDto p = participantService.getParticipant( request.getParticipantId() );
-        log.o(p);
-        return p;
+        return participantService.setParticipantRequest( request );
     }
 
 }
