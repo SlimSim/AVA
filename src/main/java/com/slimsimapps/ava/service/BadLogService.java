@@ -15,7 +15,7 @@ public class BadLogService {
 
     Logger javaLog = LoggerFactory.getLogger(MainController.class);
 
-    private ArrayList<BadLog> badLogList = new ArrayList<>();
+    private static ArrayList<BadLog> badLogList = new ArrayList<>();
 
 
     public List<BadLog> getAllBadLogs() {
@@ -38,8 +38,10 @@ public class BadLogService {
      * NOTE: ALL info- log- debug- error- and so on methods must directly call the "great" method
      * otherwise the stackTraceElement will be off by an amount!
      */
-    private void great( String level, final String text, Object ...objects ) {
-        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+    private static void great( String level, final String text, Object ...objects ) {
+        int stackTraceLevel = 3;
+
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[ stackTraceLevel ];
 
         StringBuilder objectString = new StringBuilder();
         objectString.append( text );
@@ -68,8 +70,26 @@ public class BadLogService {
         String methodName = stackTraceElement.getMethodName();
         int lineNumber = stackTraceElement.getLineNumber();
 
-        badLogList.add( new BadLog( timestamp, fileName, methodName, lineNumber, level, objectString.toString() ) );
+        if( level.equals( "thrown" ) ) {
+            String log = objectString.toString();
+            String o = "";
+            for ( StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+                if( !ste.toString().startsWith( "com.slimsimapps" )
+                            || "BadLogService.java".equals( ste.getFileName())
+                            || "AvaException.java".equals( ste.getFileName())
+                ) {
+                    continue;
+                }
+                badLogList.add( new BadLog( timestamp, ste.getFileName(), ste.getMethodName(), ste.getLineNumber(), level, log ) );
+                timestamp = "";
+                log = "at";
+            }
+        } else {
+            badLogList.add( new BadLog( timestamp, fileName, methodName, lineNumber, level, objectString.toString() ) );
+        }
 
+
+        /*
         switch (level) {
 
             case "dev":     javaLog.debug( fileName + " " + lineNumber + " " + text ); break;
@@ -79,6 +99,7 @@ public class BadLogService {
             //case "trace":   javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
             default:        javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
         }
+         */
 
 
     }
@@ -90,5 +111,6 @@ public class BadLogService {
     public void i( String text, Object ...o ) { great( "info", text, o ); }
     public void w( String text, Object ...o ) { great( "warn", text, o ); }
     public void e( String text, Object ...o ) { great( "error", text, o ); }
+    public static void thrownException( String text, Object ...o ) { great( "thrown", text, o ); }
 
 }

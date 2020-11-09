@@ -12,10 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+
+import com.slimsimapps.ava.exception.AvaException;
+import com.slimsimapps.ava.enums.EntityType;
+import com.slimsimapps.ava.enums.ExceptionType;
+
+//import static com.starterkit.springboot.brs.exception.ExceptionType.ENTITY_NOT_FOUND;
+//import static com.slimsimapps.ava.exception.AvaException.EntityNotFoundException;
+//exception.ExceptionType.DUPLICATE_ENTITY;
+
+import static com.slimsimapps.ava.dto.response.Response.exception;
+import static com.slimsimapps.ava.enums.EntityType.*;
+import static com.slimsimapps.ava.enums.ExceptionType.DUPLICATE_ENTITY;
+import static com.slimsimapps.ava.enums.ExceptionType.ENTITY_NOT_FOUND;
+import static com.slimsimapps.ava.exception.AvaException.throwException;
+
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,12 +98,25 @@ public class ParticipantService {
         return ParticipantMapper.toParticipantDto( updateParticipantModel( participantId, p.getMeeting().getId(), p ) );
     }
 
-    private Participant getParticipantModel(int id) throws Exception {
+    private Participant getParticipantModel(int id) throws RuntimeException {
         log.a(id);
+        return participants.stream().filter(p -> p.getId() == id ).findFirst().orElseThrow(
+                () -> throwException(PARTICIPANT, ENTITY_NOT_FOUND, Integer.toString(id) )
+        );
+        /*
+        Optional<Participant> participant = participants.stream().filter(p -> p.getId() == id ).findFirst();
+
+        //Supplier<RuntimeException> sup;
+
+        //participant.orElseThrow( () -> new Exception("Student not found - " ) );
+        return participant.orElseThrow( () -> exception(PARTICIPANT, ENTITY_NOT_FOUND, "userDto.getEmail()") );
+
+        throw exception(PARTICIPANT, ENTITY_NOT_FOUND, "userDto.getEmail()");
+        //participants.stream().filter(participant -> participant.getId() == id ).findFirst().orElseThrow( () -> new Exception() )
         log.o();
-        return participants.stream().filter(participant -> participant.getId() == id ).findFirst().get();
         //return participantRepository.findById(id).orElseThrow(
         //        () -> new Exception("No Participant found with id " + id) );
+         */
     }
 
     public ParticipantDto getParticipant(int id) throws Exception {

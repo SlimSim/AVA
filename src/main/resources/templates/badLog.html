@@ -26,6 +26,12 @@
     <script src="#" th:src="@{/js/badLog.js}"></script>
 
     <style>
+
+        .btn-outline-thrown {
+            color: #aa1122;
+            border-color: #aa1122;
+        }
+
         .hideDate .date {   display: none;  }
         .hideTime .time {   display: none;  }
         .hideFileName .fileName {   display: none;  }
@@ -39,12 +45,14 @@
         .hideInfo .info {   display: none;  }
         .hideWarn .warn {   display: none;  }
         .hideError .error {   display: none;  }
+        .hideThrown .thrown {   display: none;  }
 
         tr.trace {  color: #6c757d;  }
         tr.dev   {  #color: #6c757;  }
         tr.info  {  color: #17a2b8;  }
         tr.warn  {  color: #ffc107;  }
         tr.error {  color: #dc3545;  }
+        tr.thrown {  color: #aa1122;  }
     </style>
 
 </head>
@@ -73,6 +81,7 @@
             <button class="hideData btn btn-sm btn-outline-info active" data-data-to-hide="hideInfo">Info</button>
             <button class="hideData btn btn-sm btn-outline-warning active" data-data-to-hide="hideWarn">Warn</button>
             <button class="hideData btn btn-sm btn-outline-danger active" data-data-to-hide="hideError">Error</button>
+            <button class="hideData btn btn-sm btn-outline-danger btn-outline-thrown active" data-data-to-hide="hideThrown">Thrown</button>
         </div>
 
         <div class="small flex-grow-1 overflow-auto">
