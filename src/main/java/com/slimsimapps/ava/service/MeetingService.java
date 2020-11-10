@@ -22,15 +22,12 @@ public class MeetingService {
     private ArrayList<Meeting> meetingList = new ArrayList<>();
 
     public List<MeetingDto> getAllMeetings() {
-        log.a();
-        //List<Meeting> x = meetingRepository.findAll();;
-        log.o();
+        log.ao();
         return meetingList.stream().map( MeetingMapper::toMeetingDto ).collect(Collectors.toList());
     }
 
     public MeetingDto getMeeting(int id) throws Exception {
-        log.a( id );
-        log.o();
+        log.ao( id );
         return MeetingMapper.toMeetingDto( meetingList.stream().filter( meeting -> meeting.getId() == id ).findFirst().get() );
         //return meetingRepository.findById(id).orElseThrow(
         //        () -> new Exception("No Meeting found with id " + id) );

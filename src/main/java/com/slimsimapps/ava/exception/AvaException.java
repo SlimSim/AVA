@@ -18,9 +18,6 @@ import java.util.Optional;
 @Component
 public class AvaException {
 
-    @Autowired
-    static BadLogService log;
-
 	/*
     private static PropertiesConfig propertiesConfig;
 

@@ -1,5 +1,6 @@
 package com.slimsimapps.ava;
 
+import com.slimsimapps.ava.service.BadLogService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -18,7 +19,9 @@ public class AvaApplication extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
+		BadLogService.start();
 		SpringApplication.run(AvaApplication.class, args);
+		BadLogService.end();
 	}
 
 	/*

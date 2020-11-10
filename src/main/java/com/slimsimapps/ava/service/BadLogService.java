@@ -104,6 +104,7 @@ public class BadLogService {
 
     }
 
+    public void ao( Object ...o ) { great( "trace", "-><", o ); }
     public void a( Object ...o ) { great( "trace", "->", o ); }
     public void o( Object ...o ) { great( "trace", "<-", o ); }
     public void t( String text, Object ...o ) { great( "trace", text, o ); }
@@ -112,5 +113,8 @@ public class BadLogService {
     public void w( String text, Object ...o ) { great( "warn", text, o ); }
     public void e( String text, Object ...o ) { great( "error", text, o ); }
     public static void thrownException( String text, Object ...o ) { great( "thrown", text, o ); }
+    public static void start_end( Object ...o) { great( "trace", "-><", o ); }
+    public static void start( Object ...o) { great( "trace", "->", o ); }
+    public static void end( Object ...o) { great( "trace", "<-", o ); }
 
 }

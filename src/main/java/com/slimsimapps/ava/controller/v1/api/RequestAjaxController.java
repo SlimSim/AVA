@@ -33,7 +33,7 @@ public class RequestAjaxController {
 
     @PostMapping( "/ajax/singleRequest" )
     public ParticipantDto singleRequest(@RequestBody RequestDto request) throws Exception {
-        log.a(request);
+        log.ao(request);
         return participantService.setParticipantRequest( request );
     }
 

@@ -23,20 +23,19 @@ public class ParticipantController {
 
     @GetMapping("/meeting/{meetingId}/speakerQue")
     public Response<Object> getSpeakerQue(@PathVariable int meetingId){
-        log.a( meetingId );
+        log.ao( meetingId );
         return Response.ok().setPayload( participantService.getSpeakerQue( meetingId ) );
     }
 
     @GetMapping("/meeting/{meetingId}/participants")
     public Response<Object> getAllParticipants( @PathVariable int meetingId){
-        log.a( meetingId );
+        log.ao( meetingId );
         return Response.ok().setPayload( participantService.getAllParticipantDtos( meetingId ) );
     }
 
     @GetMapping("/meeting/{meetingId}/participants/{id}")
     public Response<Object> getParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
-        log.a( meetingId, id);
-        log.o();
+        log.ao( meetingId, id);
         return Response.ok().setPayload(  participantService.getParticipant( id ) ); //TODO: lägg till meetingId här, för en extra koll :)
     }
 

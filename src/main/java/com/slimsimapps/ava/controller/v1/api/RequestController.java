@@ -19,7 +19,7 @@ public class RequestController {
 
     @MessageMapping("/request")
     public void request(RequestDto request) throws Exception {
-        log.a(request);
+        log.ao(request);
         participantService.setParticipantRequest( request );
     }
 
