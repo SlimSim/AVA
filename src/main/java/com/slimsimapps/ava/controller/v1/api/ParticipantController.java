@@ -22,21 +22,33 @@ public class ParticipantController {
     private SimpMessagingTemplate template;
 
     @GetMapping("/meeting/{meetingId}/speakerQue")
-    public Response<Object> getSpeakerQue(@PathVariable int meetingId){
+    public Response<Object> getSpeakerQue(@PathVariable int meetingId) {
         log.ao( meetingId );
-        return Response.ok().setPayload( participantService.getSpeakerQue( meetingId ) );
+        try {
+            return Response.ok().setPayload( participantService.getSpeakerQue( meetingId ) );
+        } catch ( RuntimeException re ) {
+            return Response.notFound().setPayload( re.getMessage() );
+        }
     }
 
     @GetMapping("/meeting/{meetingId}/participants")
     public Response<Object> getAllParticipants( @PathVariable int meetingId){
         log.ao( meetingId );
-        return Response.ok().setPayload( participantService.getAllParticipantDtos( meetingId ) );
+        try {
+            return Response.ok().setPayload( participantService.getAllParticipantDtos( meetingId ) );
+        } catch ( RuntimeException re ) {
+            return Response.notFound().setPayload( re.getMessage() );
+        }
     }
 
     @GetMapping("/meeting/{meetingId}/participants/{id}")
-    public Response<Object> getParticipant( @PathVariable int meetingId, @PathVariable int id ) throws Exception {
+    public Response<Object> getParticipant( @PathVariable int meetingId, @PathVariable int id ) {
         log.ao( meetingId, id);
-        return Response.ok().setPayload(  participantService.getParticipant( id ) ); //TODO: lägg till meetingId här, för en extra koll :)
+        try {
+            return Response.ok().setPayload(  participantService.getParticipant( id ) ); //TODO: lägg till meetingId här, för en extra koll :)
+        } catch ( RuntimeException re ) {
+            return Response.notFound().setPayload( re.getMessage() );
+        }
     }
 
     /*

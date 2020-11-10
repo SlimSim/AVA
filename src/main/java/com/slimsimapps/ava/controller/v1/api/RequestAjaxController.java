@@ -23,7 +23,7 @@ public class RequestAjaxController {
     ParticipantService participantService;
 
     @PostMapping( "/ajax/request" )
-    public List<ParticipantDto> request(@RequestBody RequestDto request) throws Exception {
+    public List<ParticipantDto> request(@RequestBody RequestDto request) {
         log.a( request );
         participantService.setParticipantRequest( request );
         MeetingDto meeting = participantService.getParticipantMeeting( request.getParticipantId() );
@@ -32,7 +32,7 @@ public class RequestAjaxController {
     }
 
     @PostMapping( "/ajax/singleRequest" )
-    public ParticipantDto singleRequest(@RequestBody RequestDto request) throws Exception {
+    public ParticipantDto singleRequest(@RequestBody RequestDto request) {
         log.ao(request);
         return participantService.setParticipantRequest( request );
     }

@@ -23,8 +23,7 @@ import com.slimsimapps.ava.enums.ExceptionType;
 
 import static com.slimsimapps.ava.dto.response.Response.exception;
 import static com.slimsimapps.ava.enums.EntityType.*;
-import static com.slimsimapps.ava.enums.ExceptionType.DUPLICATE_ENTITY;
-import static com.slimsimapps.ava.enums.ExceptionType.ENTITY_NOT_FOUND;
+import static com.slimsimapps.ava.enums.ExceptionType.*;
 import static com.slimsimapps.ava.exception.AvaException.throwException;
 
 import java.util.*;
@@ -49,7 +48,7 @@ public class ParticipantService {
     List<Participant> participants = new ArrayList<>();
 
 
-    public List<ParticipantDto> getAllParticipantDtos(int meetingId ) {
+    public List<ParticipantDto> getAllParticipantDtos(int meetingId ) throws RuntimeException {
         log.a(meetingId);
         /*
         List<Participant> participants = new ArrayList<>();
@@ -57,6 +56,7 @@ public class ParticipantService {
         meetingIterable.forEach(participants::add);
         return participantRepository.findByMeetingId( meetingId );
         */
+        meetingService.getMeeting( meetingId ); //checks if the meeting exists, otherwise throw exception
         log.o();
         return participants.stream()
                        .filter(p -> p.getMeeting().getId() == meetingId)
@@ -64,7 +64,7 @@ public class ParticipantService {
                        .collect(Collectors.toList());
     }
 
-    public ParticipantDto setParticipantRequest( RequestDto requestDto ) throws Exception {
+    public ParticipantDto setParticipantRequest( RequestDto requestDto ) throws RuntimeException {
         log.a(requestDto);
         int participantId = requestDto.getParticipantId();
         RequestType requestType = requestDto.getRequestType();
@@ -101,7 +101,7 @@ public class ParticipantService {
     private Participant getParticipantModel(int id) throws RuntimeException {
         log.a(id);
         return participants.stream().filter(p -> p.getId() == id ).findFirst().orElseThrow(
-                () -> throwException(PARTICIPANT, ENTITY_NOT_FOUND, Integer.toString(id) )
+                () -> throwException(PARTICIPANT, ENTITY_NOT_FOUND, id )
         );
         /*
         Optional<Participant> participant = participants.stream().filter(p -> p.getId() == id ).findFirst();
@@ -112,22 +112,22 @@ public class ParticipantService {
         return participant.orElseThrow( () -> exception(PARTICIPANT, ENTITY_NOT_FOUND, "userDto.getEmail()") );
 
         throw exception(PARTICIPANT, ENTITY_NOT_FOUND, "userDto.getEmail()");
-        //participants.stream().filter(participant -> participant.getId() == id ).findFirst().orElseThrow( () -> new Exception() )
+        //participants.stream().filter(participant -> participant.getId() == id ).findFirst().orElseThrow( () -> throwException(PARTICIPANT, ENTITY_NOT_FOUND, id ) )
         log.o();
         //return participantRepository.findById(id).orElseThrow(
-        //        () -> new Exception("No Participant found with id " + id) );
+        //        () -> throwException(PARTICIPANT, ENTITY_NOT_FOUND, id) );
          */
     }
 
-    public ParticipantDto getParticipant(int id) throws Exception {
+    public ParticipantDto getParticipant(int id) throws RuntimeException {
         log.a(id);
         return ParticipantMapper.toParticipantDto( getParticipantModel( id ) );
     }
 
-    public ParticipantDto addParticipant(ParticipantDto participantDto, int meetingId) throws Exception {
+    public ParticipantDto addParticipant(ParticipantDto participantDto, int meetingId) throws RuntimeException {
         log.a(participantDto, meetingId);
         if( participantDto == null ) {
-            throw new Exception("No body found, participant is null");
+            throw throwException(PARTICIPANT, ENTITY_NULL);
         }
 
         Participant participant = ParticipantMapper.toParticipant( participantDto );
@@ -164,7 +164,22 @@ public class ParticipantService {
         //return participantRepository.save(participant);
     }
 
-    private Participant updateParticipantModel(int participantId, int meetingId, Participant updatedParticipantData) throws Exception {
+    private int getParticipantIndexFromId(int participantId) throws RuntimeException{
+        int participantIndex = -1;
+        for( int i = 0; i < participants.size(); i++ ) {
+            if( participants.get( i ).getId() != participantId ){
+                continue;
+            }
+            participantIndex = i;
+            break;
+        }
+        if( participantIndex == -1 ) {
+            throw throwException(PARTICIPANT, ENTITY_NOT_FOUND, participantId);
+        }
+        return participantIndex;
+    }
+
+    private Participant updateParticipantModel(int participantId, int meetingId, Participant updatedParticipantData) throws RuntimeException {
         log.a(participantId, meetingId, updatedParticipantData);
         /*
         if( !participantRepository.existsById(participantId) ) {
@@ -183,14 +198,7 @@ public class ParticipantService {
         updatedParticipantData.setShowVoteYes( meeting.isShowVoteYes() );
         updatedParticipantData.setShowVoteNo( meeting.isShowVoteNo() );
 
-        int participantIndex = -1;
-        for( int i = 0; i < participants.size(); i++ ) {
-            if( participants.get( i ).getId() != participantId ){
-                continue;
-            }
-            participantIndex = i;
-            break;
-        }
+        int participantIndex = getParticipantIndexFromId( participantId );
 
         participants.set( participantIndex, updatedParticipantData );
         log.o(updatedParticipantData);
@@ -200,23 +208,22 @@ public class ParticipantService {
 
     public ParticipantDto updateParticipant(int participantId, int meetingId, ParticipantDto updatedParticipantDtoData) throws Exception {
         return ParticipantMapper.toParticipantDto( updateParticipantModel(participantId, meetingId, ParticipantMapper.toParticipant( updatedParticipantDtoData )) );
-
     }
 
-    public void deleteParticipant(int id) throws Exception {
+    public void deleteParticipant(int id) throws RuntimeException {
         log.a(id);
         /*
         if( !participantRepository.existsById(id) ) {
-            throw new Exception("No Participant found with id " + id);
+            throw throwException(PARTICIPANT, ENTITY_NOT_FOUND, ID);
         }
         participantRepository.deleteById( id );
         */
 
-        participants.remove( id );
+        participants.remove( getParticipantIndexFromId( id ) );
         log.o();
     }
 
-    public List<ParticipantDto> getSpeakerQue(int meetingId) {
+    public List<ParticipantDto> getSpeakerQue(int meetingId) throws RuntimeException {
         log.a();
         List<ParticipantDto> x = getAllParticipantDtos( meetingId );
 
@@ -287,7 +294,7 @@ public class ParticipantService {
         return sortedParticipantList;
     }
 
-    public MeetingDto getParticipantMeeting(int participantId) throws Exception {
+    public MeetingDto getParticipantMeeting(int participantId) throws RuntimeException {
         return MeetingMapper.toMeetingDto( getParticipantModel( participantId ).getMeeting() );
     }
 }
