@@ -4,18 +4,42 @@ import com.slimsimapps.ava.model.badlog.BadLog;
 import com.slimsimapps.ava.controller.v1.ui.MainController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.Timestamp;
 
 @Service
 public class BadLogService {
 
-    Logger javaLog = LoggerFactory.getLogger(MainController.class);
+    private static final Logger javaLog = LoggerFactory.getLogger(MainController.class);
 
-    private static ArrayList<BadLog> badLogList = new ArrayList<>();
+    private static final ArrayList<BadLog> badLogList = new ArrayList<>();
+
+    private static final List<String> logLevels = Arrays.asList("trace", "dev", "info", "warn", "error", "thrown");
+
+    private static String badLogLevel;
+    private static String consoleLogLevel;
+    private static boolean consoleShowThrown;
+
+
+    @Value("${badLog.badLogLevel}")
+    public void setBadLogLevel(String badLogLevel) {
+        BadLogService.badLogLevel = badLogLevel;
+    }
+
+    @Value("${badLog.consoleLogLevel}")
+    public void setConsoleLogLevel(String consoleLogLevel) {
+        BadLogService.consoleLogLevel = consoleLogLevel;
+    }
+
+    @Value("${badLog.consoleShowThrown}")
+    public void setConsoleShowThrown(boolean consoleShowThrown) {
+        BadLogService.consoleShowThrown = consoleShowThrown;
+    }
 
 
     public List<BadLog> getAllBadLogs() {
@@ -72,7 +96,6 @@ public class BadLogService {
 
         if( level.equals( "thrown" ) ) {
             String log = objectString.toString();
-            String o = "";
             for ( StackTraceElement ste : Thread.currentThread().getStackTrace()) {
                 if( !ste.toString().startsWith( "com.slimsimapps" )
                             || "BadLogService.java".equals( ste.getFileName())
@@ -80,27 +103,56 @@ public class BadLogService {
                 ) {
                     continue;
                 }
-                badLogList.add( new BadLog( timestamp, ste.getFileName(), ste.getMethodName(), ste.getLineNumber(), level, log ) );
+                addBadLog( timestamp, ste.getFileName(), ste.getMethodName(), ste.getLineNumber(), level, log );
                 timestamp = "";
                 log = "at";
             }
         } else {
-            badLogList.add( new BadLog( timestamp, fileName, methodName, lineNumber, level, objectString.toString() ) );
+            addBadLog( timestamp, fileName, methodName, lineNumber, level, objectString.toString() );
         }
 
 
-        /*
+        addConsole( timestamp, fileName, methodName, lineNumber, level, objectString.toString() );
+    }
+
+    private static void addConsole(String timestamp, String fileName, String methodName, int lineNumber, String level, String logInfo) {
+
+        if( "none".equals( consoleLogLevel ) || logLevels.indexOf( level ) < logLevels.indexOf( consoleLogLevel )  ) {
+            return;
+        }
+
         switch (level) {
-
-            case "dev":     javaLog.debug( fileName + " " + lineNumber + " " + text ); break;
-            case "info":    javaLog.info( fileName + " " + lineNumber + " " + text ); break;
-            case "warn":    javaLog.warn( fileName + " " + lineNumber + " " + text ); break;
-            case "error":   javaLog.error( fileName + " " + lineNumber + " " + text ); break;
-            //case "trace":   javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
-            default:        javaLog.trace( fileName + " " + lineNumber + " " + text ); break;
+            case "trace":
+                javaLog.trace( fileName + " " + lineNumber + " " + logInfo );
+                break;
+            case "dev":
+                javaLog.debug(fileName + " " + lineNumber + " " + logInfo);
+                break;
+            case "info":
+                javaLog.info(fileName + " " + lineNumber + " " + logInfo);
+                break;
+            case "warn":
+                javaLog.warn(fileName + " " + lineNumber + " " + logInfo);
+                break;
+            case "error":
+                javaLog.error(fileName + " " + lineNumber + " " + logInfo);
+                break;
+            case "thrown":
+                if( consoleShowThrown ) {
+                    javaLog.error(fileName + " " + lineNumber + " " + logInfo);
+                }
+                break;
+            default:
+                javaLog.trace(fileName + " " + lineNumber + " " + logInfo);
+                break;
         }
-         */
+    }
 
+    private static void addBadLog(String timestamp, String fileName, String methodName, int lineNumber, String level, String logInfo) {
+        if( logLevels.indexOf(level) < logLevels.indexOf( badLogLevel )  ) {
+            return;
+        }
+        badLogList.add(new BadLog(timestamp, fileName, methodName, lineNumber, level, logInfo));
 
     }
 
