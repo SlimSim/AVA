@@ -26,6 +26,12 @@
 
 </head>
 <body class="p-1">
+    <div
+            th:if="${@environment.getProperty('show-dev-banner')}"
+            class="banner bg-danger mx--1 mt--1 text-white text-center">
+       DEVELOPMENT
+    </div>
+
     <h1 class="text-break" th:text="${meeting.name}" />
     <input type="hidden" id="meetingId" th:value="${meeting.id}"/>
 

@@ -18,6 +18,12 @@
 
 </head>
 <body>
+	<div
+	        th:if="${@environment.getProperty('show-dev-banner')}"
+	        class="banner bg-danger text-white text-center">
+	   DEVELOPMENT
+	</div>
+
 
 <div class="text-center p-3 pb-5">
 	<h1>Något trasigt gick sönder</h1>

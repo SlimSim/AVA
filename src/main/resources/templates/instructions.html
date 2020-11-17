@@ -19,6 +19,12 @@
 
     <div class="col-sm-1 col-lg-2"></div>
     <div class="col-sm-10 col-lg-8 d-flex flex-column h-100 p-1">
+        <div
+                th:if="${@environment.getProperty('show-dev-banner')}"
+                class="banner bg-danger mx--1 mt--1 text-white text-center">
+           DEVELOPMENT
+        </div>
+
         <div class="pb-3 text-center">
             <img src="logos/logo.svg" alt="logo" class="w-100" width="51" height="20">
         </div>

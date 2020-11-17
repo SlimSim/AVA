@@ -57,6 +57,12 @@
 
 </head>
 <body class="window-height m-0 p-0 container-fluid">
+    <div
+            th:if="${@environment.getProperty('show-dev-banner')}"
+            class="banner bg-danger text-white">
+       DEVELOPMENT
+    </div>
+
     <div class="col h-100 d-flex flex-column">
         <h1 class="p-2">BadLog</h1>
 

@@ -6,6 +6,13 @@ body {
     background-color: #efefef;
 }
 
+.m--1 {  margin: -.25rem!important; }
+.mr--1, .mx--1 { margin-right: -.25rem!important; }
+.ml--1, .mx--1 { margin-left: -.25rem!important; }
+.mt--1, .my--1 { margin-top: -.25rem!important; }
+.mb--1, .my--1 { margin-bottom: -.25rem!important; }
+
+
 .btn-outline-danger:hover {
     color: #dc3545;
     border-color: #dc3545;
