@@ -47,6 +47,26 @@
         <button th:if="${participant.showVoteNo}" type="button" th:classappend="${participant.voteNo} ? active" data-time-changed="0" class="btn request-button btn-block btn-outline-no" id="voteNo">Rösta NEJ</button>
 
     </form>
+    <!-- Modal -->
+    <div id="participantNoLongerInMeeting" class="modal fade" role="dialog">
+      <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Du är inte längre i mötet</h4>
+          </div>
+          <div class="modal-body">
+              <p>Du har antingen lämnat mötet själv eller blivigt borttagen av mötesadministratören.</p>
+              <p class="small">Notera att du kan endast vara aktiv i ett möte i taget.</p>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" id="reconnectToMeeting" class="btn btn-default" >Anslut till mötet igen</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 </body>
 </html>

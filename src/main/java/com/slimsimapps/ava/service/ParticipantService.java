@@ -297,4 +297,13 @@ public class ParticipantService {
     public MeetingDto getParticipantMeeting(int participantId) throws RuntimeException {
         return MeetingMapper.toMeetingDto( getParticipantModel( participantId ).getMeeting() );
     }
+
+    public boolean isParticipantInMeeting(int participantId, int meetingId) {
+        return getParticipantModel( participantId ).getMeeting().getId() == meetingId;
+
+    }
+
+    public boolean participantExists(int participantId) {
+        return participants.stream().anyMatch(p -> p.getId() == participantId );
+    }
 }

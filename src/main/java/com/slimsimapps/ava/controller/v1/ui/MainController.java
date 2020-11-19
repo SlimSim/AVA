@@ -8,13 +8,13 @@ import com.slimsimapps.ava.service.MeetingService;
 import com.slimsimapps.ava.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -46,67 +46,64 @@ public class MainController {
     public ModelAndView newMeeting(MeetingDto m, ModelMap model ) throws Exception {
         log.a();
         MeetingDto m2 = meetingService.addMeeting(m);
-        String url = "/meeting/" + m2.getId();
+        String url = "/" + m2.getId() + "/admin";
         log.o( url );
         return new ModelAndView( "redirect:" + url);
     }
 
-    @GetMapping("meeting/{id}")
-    public ModelAndView myMeeting(@PathVariable int id, ModelMap model, HttpServletRequest request ) throws Exception {
+    @GetMapping("/{meetingId}/admin")
+    public ModelAndView meetingAdmin(@PathVariable int meetingId, ModelMap model, HttpServletRequest request ) throws Exception {
         log.a();
-        MeetingDto m2 = meetingService.getMeeting( id );
+        MeetingDto m2 = meetingService.getMeeting( meetingId );
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-        model.addAttribute("participants", participantService.getAllParticipantDtos( id ));
+        model.addAttribute("participants", participantService.getAllParticipantDtos( meetingId ));
         model.addAttribute( "meeting", m2 );
-        model.addAttribute("joinUrl", baseUrl + "/meeting/" + id + "/join");
+        model.addAttribute("joinUrl", baseUrl + "/meeting/" + meetingId + "/join");
 
         log.o( model );
         return new ModelAndView( "meeting", model );
     }
 
-    @GetMapping("meeting/{id}/join")
-    public String joinMeeting(@PathVariable int id, Model model ) throws Exception {
-        log.a(id);
-        MeetingDto m = meetingService.getMeeting(id);
-        model.addAttribute( "meetingId", m.getId() );
-        model.addAttribute( "meetingName", m.getName() );
-        log.o();
-        return "createMe";
-    }
-
-    @PostMapping("meeting/{meetingId}/participant")
-    public ModelAndView createMeetingParticipant(@PathVariable int meetingId, ParticipantDto p, ModelMap model ) throws Exception {
+    @PostMapping("/meeting/{meetingId}/participant")
+    public ModelAndView createMeetingParticipant(@PathVariable int meetingId, ParticipantDto p, ModelMap model, HttpServletRequest request ) throws Exception {
         log.a();
+        log.d( "p", p );
         ParticipantDto p2 = participantService.addParticipant(p, meetingId);
 
-        String url = "/meeting/" + meetingId + "/participant/" + p2.getId();
+        request.getSession().setAttribute( "participantId", p2.getId() );
+
+        String url = "/" + meetingId;
 
         log.o( url );
         return new ModelAndView( "redirect:" + url);
     }
 
-    @GetMapping("meeting/{meetingId}/participant/{participantId}")
-    public ModelAndView meetingParticipant(@PathVariable int meetingId, @PathVariable int participantId, ModelMap model ) throws Exception {
+    @GetMapping("/{meetingId}")
+    public ModelAndView meeting(@PathVariable int meetingId, ModelMap model, HttpServletRequest request ) throws Exception {
         log.a();
+
+        MeetingDto m = meetingService.getMeeting(meetingId);
+        model.addAttribute( "meetingName", m.getName() );
+
+        HttpSession session = request.getSession();
+
+        Integer participantId = (Integer) session.getAttribute( "participantId" );
+
+        if( participantId == null ||
+                    !participantService.participantExists( participantId ) ||
+                    !participantService.isParticipantInMeeting( participantId, meetingId ) ) {
+
+            if( participantId != null && participantService.participantExists( participantId ) ) {
+                participantService.deleteParticipant(participantId);
+            }
+
+            model.addAttribute( "meetingId", m.getId() );
+            log.o();
+            return new ModelAndView( "createMe", model );
+        }
+
         ParticipantDto p = participantService.getParticipant(participantId);
         model.addAttribute("participant", p );
-
-        MeetingDto m = meetingService.getMeeting(meetingId);
-        model.addAttribute( "meetingName", m.getName() );
-
-        log.o( model );
-        return new ModelAndView( "meetingParticipant", model );
-    }
-
-
-    @PostMapping("meeting/{meetingId}/participant/{participantId}")
-    public ModelAndView updateMeetingParticipant(@PathVariable int meetingId, @PathVariable int participantId, ParticipantDto p, ModelMap model ) throws Exception {
-        log.a();
-        ParticipantDto p2 = participantService.updateParticipant(participantId, meetingId, p);
-        model.addAttribute("participant", p2 );
-
-        MeetingDto m = meetingService.getMeeting(meetingId);
-        model.addAttribute( "meetingName", m.getName() );
 
         log.o( model );
         return new ModelAndView( "meetingParticipant", model );

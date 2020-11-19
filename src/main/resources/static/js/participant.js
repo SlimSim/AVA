@@ -57,6 +57,10 @@ $( document ).ready(function() {
         $( event.target ).data( "time-changed", Date.now() );
     },
 
+    reconnectToMeeting = function( event ) {
+		location.reload();
+    },
+
     submitForm = function( event ) {
         event.preventDefault();
 
@@ -74,6 +78,11 @@ $( document ).ready(function() {
             url: myRequestsUrl
         })
         .done( ( response ) => {
+            if( response.status == "NOT_FOUND" ) {
+                $( "#participantNoLongerInMeeting" ).modal( "show" );
+                $( "#participantForm" ).find( "button" ).prop( "disabled", true);
+                return;
+            }
             if( response.status != "OK" ) {
                 console.error( "error on get " + myRequestsUrl + ": ", response );
                 alert( "Fel vid hämtnign av deltagarkö, försök igen" );
@@ -106,6 +115,8 @@ $( document ).ready(function() {
     continuouslyPullMyRequests(); // noWebSockets;
 
     $( ".request-button" ).on( "click", submitForm );
+
+    $( "#reconnectToMeeting" ).on( "click", reconnectToMeeting )
 
     $( "[data-time-changed]" ).on( "click", addTimeChanged);
 

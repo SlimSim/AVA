@@ -78,6 +78,12 @@ public class BadLogService {
             }
 
             for (Object o : objects) {
+                if( o == null ) {
+                    continue;
+                }
+                if( o.getClass() == null ) {
+                    continue;
+                }
                 String name = o.getClass().getName();
                 objectString
                         .append( name.substring( name.lastIndexOf(".") + 1 ) )

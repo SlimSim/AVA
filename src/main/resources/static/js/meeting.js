@@ -278,7 +278,7 @@ $( document ).ready(function() {
     },
 
     setJoinUrl = function() {
-        const joinUrl = window.location.href + "/join";
+        const joinUrl = window.location.href.replace("/admin", "");
         $( "#joinUrl" ).attr( "href", joinUrl ).text( joinUrl );
     };
 
