@@ -37,4 +37,14 @@ public class ParticipantController {
         }
     }
 
+    @GetMapping("/meeting/{meetingId}/participants/{id}")
+    public Response<Object> getParticipant( @PathVariable int meetingId, @PathVariable int id ) {
+        log.ao( meetingId, id);
+        try {
+            return Response.ok().setPayload(  participantService.getParticipant( id ) ); //TODO: lägg till meetingId här, för en extra koll :)
+        } catch ( RuntimeException re ) {
+            return Response.notFound().setPayload( re.getMessage() );
+        }
+    }
+
 }
