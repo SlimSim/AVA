@@ -17,6 +17,8 @@
     <script th:inline="javascript">
         const thymeLeaf = {
             contextPath : /*[[@{/}]]*/ null,
+            useWebSockets : [[${@environment.getProperty('useWebSockets')}]] == "true",
+            myRequestsPullTimeout : [[${@environment.getProperty('myRequestsPullTimeout')}]] || 1000,
         };
     </script>
 

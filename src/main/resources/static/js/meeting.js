@@ -268,13 +268,13 @@ $( document ).ready(function() {
     continuouslyPullForSpeakerQue = function() {
         setTimeout( () => {
             getSpeakerQue( continuouslyPullForSpeakerQue );
-        }, 1000 );
+        }, thymeLeaf.speakerQuePullTimeout );
     },
 
     continuouslyPullForParticipants = function() {
         setTimeout( () => {
             getParticipants( continuouslyPullForParticipants );
-        }, 9000 );
+        }, thymeLeaf.participantsPullTimeout );
     },
 
     setJoinUrl = function() {
@@ -285,9 +285,12 @@ $( document ).ready(function() {
 
     setJoinUrl();
 
-    //connect(); // webSockets
-    continuouslyPullForSpeakerQue(); // noWebSockets
-    continuouslyPullForParticipants(); // noWebSockets
+	if( thymeLeaf.useWebSockets ) {
+		connect(); // webSockets
+	} else {
+	    continuouslyPullForSpeakerQue(); // noWebSockets
+	    continuouslyPullForParticipants(); // noWebSockets
+	}
 
     getSpeakerQue();
     getParticipants();

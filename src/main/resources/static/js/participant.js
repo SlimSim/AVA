@@ -5,7 +5,7 @@ $( document ).ready(function() {
     const socketUrl = thymeLeaf.contextPath + 'gs-guide-websocket';
 	const requestUrl = thymeLeaf.contextPath + "ajax/singleRequest";
 	const myRequestsUrl = thymeLeaf.contextPath + "meeting/" + meetingId + "/participants/" + participantId;
-
+	console.log( "myRequestsUrl", myRequestsUrl);
     var stompClient = null,
 
     connect = function() {
@@ -108,11 +108,14 @@ $( document ).ready(function() {
     continuouslyPullMyRequests = function() {
         setTimeout( () => {
             getMyRequests( continuouslyPullMyRequests );
-        }, 1000 );
+        }, thymeLeaf.myRequestsPullTimeout );
     };
 
-    //connect(); // webSockets
-    continuouslyPullMyRequests(); // noWebSockets;
+	if( thymeLeaf.useWebSockets ) {
+	    connect(); // webSockets
+	} else {
+        continuouslyPullMyRequests(); // noWebSockets;
+	}
 
     $( ".request-button" ).on( "click", submitForm );
 
