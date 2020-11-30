@@ -65,7 +65,7 @@ public class MainController {
     }
 
     @PostMapping("/meeting/{meetingId}/participant")
-    public ModelAndView createMeetingParticipant(@PathVariable int meetingId, ParticipantDto p, ModelMap model, HttpServletRequest request ) throws Exception {
+    public ModelAndView createParticipant(@PathVariable int meetingId, ParticipantDto p, ModelMap model, HttpServletRequest request ) throws Exception {
         log.a();
         log.d( "p", p );
         ParticipantDto p2 = participantService.addParticipant(p, meetingId);
@@ -106,7 +106,7 @@ public class MainController {
         model.addAttribute("participant", p );
 
         log.o( model );
-        return new ModelAndView( "meetingParticipant", model );
+        return new ModelAndView( "participant", model );
     }
 
 }
