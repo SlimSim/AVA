@@ -24,6 +24,7 @@ public class BadLogService {
     private static String badLogLevel;
     private static String consoleLogLevel;
     private static boolean consoleShowThrown;
+    private static int historyLength;
 
 
     @Value("${badLog.badLogLevel}")
@@ -39,6 +40,11 @@ public class BadLogService {
     @Value("${badLog.consoleShowThrown}")
     public void setConsoleShowThrown(boolean consoleShowThrown) {
         BadLogService.consoleShowThrown = consoleShowThrown;
+    }
+
+    @Value("${badLog.historyLength}")
+    public void setHistoryLength(int historyLength) {
+        BadLogService.historyLength = historyLength;
     }
 
 
@@ -158,6 +164,11 @@ public class BadLogService {
         if( logLevels.indexOf(level) < logLevels.indexOf( badLogLevel )  ) {
             return;
         }
+
+        if( badLogList.size() > historyLength ) {
+            badLogList.remove( 0 );
+        }
+
         badLogList.add(new BadLog(timestamp, fileName, methodName, lineNumber, level, logInfo));
 
     }
